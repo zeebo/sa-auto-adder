@@ -1,8 +1,22 @@
-application: sa-auto-adder
+application: zeebo-devel
 version: 1
 runtime: python
 api_version: 1
 
 handlers:
-- url: .*
-  script: main.py
+- url: /_wave/.*
+  script: sa-auto-adder.py
+- url: /assets
+  static_dir: /assets
+
+skip_files:
+- ^(.*/)?app\.yaml
+- ^(.*/)?app\.yml
+- ^(.*/)?index\.yaml
+- ^(.*/)?index\.yml
+- ^(.*/)?#.*#
+- ^(.*/)?.*~
+- ^(.*/)?.*\.py[co]
+- ^(.*/)?.*/RCS/.*
+- ^(.*/)?\..*
+- ^(.*/)?README$  

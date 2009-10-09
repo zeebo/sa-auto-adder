@@ -1,0 +1,13 @@
+SA Auto Adder
+
+This makes a robot that will added users to all of the waves it
+is currently participating in.
+
+It will make a page that when a user visits it, they will be presented
+with a captcha, a request to put some token involving their google wave
+address in their profile, and a box for their user id, and a prompt for
+a password.
+
+When everything is sucessful, they get to go to their account page
+which lists all of the waves the bot is participating in, and checkboxes
+to let them participate in waves if they choose to.

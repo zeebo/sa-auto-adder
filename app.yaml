@@ -5,7 +5,7 @@ api_version: 1
 
 handlers:
 - url: /_wave/.*
-  script: sa_auto_adder.py
+  script: robot.py
 - url: /assets
   static_dir: assets
 - url: /favicon.ico

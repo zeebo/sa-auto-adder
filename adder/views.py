@@ -26,13 +26,17 @@ def logout(request):
 @utils.redirect_if_authenticated('/panel')
 def create(request):
   values = {}
+  if request.META["REQUEST_METHOD"] == "POST":
+    valid, error = utils.check_auth_token(request.POST['user_id'])
+    if valid:
+      return HttpResponse("FOUND YOUR TOKEN OMG")
+    else:
+      values['token_failed'] = True
+      values['error'] = error
+  values['token'] = utils.create_token()
   return render_to_response('create.html', values)
 
 @utils.require_login
 def panel(request):
   return HttpResponse("you made it brah <a href=\"/logout\">logout</a>")
-  
-@utils.require_login
-def page_name(request):
-  return HttpResponse("SUP")
-  
+    

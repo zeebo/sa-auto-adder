@@ -4,7 +4,44 @@ from django.template import Context, loader
 from google.appengine.ext import db
 from models import User
 from appengine_utilities import sessions
-import utils, datetime
+import utils, datetime, hashlib, random, urllib
+
+def valid_sa_user_id(user_id):
+  try:
+    uid = int(user_id)
+  except ValueError:
+    return False
+  return uid > 0
+  
+def check_auth_token(user_id):
+  if not valid_sa_user_id(user_id):
+    return (False, 'invalid user id')
+  url = "http://forums.somethingawful.com/member.php?action=getinfo&userid=%s" % user_id
+  session = sessions.Session()
+  error = None
+  found_token = False
+  data = None
+  try:
+    f = urllib.urlopen(url)
+    data = f.read()
+    found_token = session['token'] in f.read()
+  except:
+    error = 'couldn\'t read website'
+  finally:
+    f.close()
+  if found_token == False:
+    error = 'couldn\'t find token (%s) (%s)' % (session['token'], data)
+  return (found_token, error)
+  
+
+def create_token():
+  session = sessions.Session()
+  token = "sa-auto-adder|%s" % hashlib.sha1(str(random.random())).hexdigest()[:10]
+  
+  token = "sa-auto-adder|test"
+  
+  session['token'] = token
+  return token
 
 def logout(redirect_to):
   session = sessions.Session()
@@ -31,7 +68,6 @@ def login(user, redirect_to, set_cookie):
   return response
   
 def set_cookie_header(response, user):
-  import hashlib, random
   cookie_token = hashlib.sha1(str(random.random())).hexdigest()
   cookie_value = "token=%s|%s; expires=Fri, 31-Dec-2020 23:59:59 GMT" % (cookie_token, user.username)
   response['Set-Cookie'] = cookie_value

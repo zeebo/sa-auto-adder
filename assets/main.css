@@ -12,13 +12,37 @@ a {
   color: rgb(220,100,100);
   font-weight: bold;
 }
-#login-form {
-	width:25em;
+.main_div {
+	width:750px;
 	margin: 0 auto;
 }
 
-
-
+div.form_div {
+  text-align:left;
+  margin: 0 auto;
+  width: 55em;
+}
+.form_div form p {
+  margin: 0;
+  padding: 0;
+}
+.form_div form p.submit {
+  margin-left: 25.5em;
+}
+.form_div p.submit input {
+  width: 7em;
+}
+.form_div p input {
+  width: 15em;
+}
+.form_div label {
+  line-height: 20px;
+  float: left;
+  display: block;
+  margin-right: .5em;
+  width: 25em;
+  text-align: right;
+}
 
 
 
@@ -59,5 +83,5 @@ a {
 .spiffy5{
   border-left:1px solid #50444a;
   border-right:1px solid #50444a}
-.spiffyfg{
-  background:#64555C}
+.spiffyfg{background:#64555C}
+.spiffyfg h2,h3 { margin: 0; }

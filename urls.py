@@ -21,7 +21,6 @@ urlpatterns = patterns('',
     (r'^create/$', 'adder.views.create'),
     (r'^panel/$', 'adder.views.panel'),
     (r'^logout/$', 'adder.views.logout'),
-    (r'^whatever/$', 'adder.views.page_name'),
     # Uncomment this for admin:
 #     (r'^admin/', include('django.contrib.admin.urls')),
 )

@@ -16,21 +16,22 @@ def valid_sa_user_id(user_id):
 def check_auth_token(user_id):
   if not valid_sa_user_id(user_id):
     return (False, 'invalid user id')
+  
   url = "http://forums.somethingawful.com/member.php?action=getinfo&userid=%s" % user_id
   session = sessions.Session()
   error = None
   found_token = False
-  data = None
   try:
     f = urllib.urlopen(url)
-    data = f.read()
     found_token = session['token'] in f.read()
   except:
     error = 'couldn\'t read website'
   finally:
     f.close()
+  
   if found_token == False:
-    error = 'couldn\'t find token (%s) (%s)' % (session['token'], data)
+    error = 'couldn\'t find token (%s)' % session['token']
+    
   return (found_token, error)
   
 

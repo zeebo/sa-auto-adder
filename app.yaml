@@ -4,15 +4,15 @@ runtime: python
 api_version: 1
 
 handlers:
-- url: /main.css
-  static_files: site/main.css
-  upload: site/main.css
 - url: /_wave/.*
-  script: sa-auto-adder.py
+  script: robot.py
 - url: /assets
-  static_dir: /assets
+  static_dir: assets
+- url: /favicon.ico
+  static_files: assets/favicon.ico
+  upload: assets/favicon.ico
 - url: /.*
-  script: site/main.py
+  script: main.py
   
 skip_files:
 - ^(.*/)?app\.yaml

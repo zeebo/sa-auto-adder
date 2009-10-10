@@ -1,13 +1,16 @@
 SA Auto Adder
 
-This makes a robot that will added users to all of the waves it
-is currently participating in.
+This makes a robot that will added users to all of the waves it is currently
+participating in.
 
-It will make a page that when a user visits it, they will be presented
-with a captcha, a request to put some token involving their google wave
-address in their profile, and a box for their user id, and a prompt for
-a password.
+Users will be presented with a page where they can log in or create an account.
+To create an account, they will be asked to put a token in their profile page
+and their user id, and asked to give a new password for their account. If everything
+works, they can then log in.
 
-When everything is sucessful, they get to go to their account page
-which lists all of the waves the bot is participating in, and checkboxes
-to let them participate in waves if they choose to.
+When they log in they will be presented with a control panel that lists all of the waves
+the robot will allow them to join with options to join them.
+
+To make the wave an sa wave, you just add the robot and then you are in control
+of who the robot invites through the control panel. In other words there will be
+a banlist for losers who cant wave right.

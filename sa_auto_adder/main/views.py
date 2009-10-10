@@ -1,17 +1,20 @@
 from django.http import HttpResponse
+from django.template import Context, loader
+from sa_auto_adder.main.models import User
+from google.appengine.ext import db
+import hashlib
 
-from sa_auto_adder.main.models import Visitor
+def create(request):
+  return HttpResponse("create!")
 
+def panel(request):
+  return HttpResponse("panel!")
+
+def login(request):
+  return HttpResponse("login!")
+  
 def main(request):
-  visitor = Visitor()
-  visitor.ip = request.META["REMOTE_ADDR"]
-  visitor.put()
-  
-  result = ""
-  visitors = Visitor.all()
-  visitors.order("-added_on")
-  
-  for visitor in visitors.fetch(limit=40):
-    result += visitor.ip + u" visited on " + unicode(visitor.added_on) + u"<br>"
-    
-  return HttpResponse(result)
+  context = {'login_failed': False}
+  t = loader.get_template('main.html')
+  c = Context(context)
+  return HttpResponse(t.render(c))

@@ -1,5 +1,5 @@
 # Django settings for sa_auto_adder project.
-
+import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -64,8 +64,9 @@ MIDDLEWARE_CLASSES = (
 )
 
 ROOT_URLCONF = 'sa_auto_adder.urls'
-
+ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_DIRS = (
+    ROOT_PATH + "/templates",
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.

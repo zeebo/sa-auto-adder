@@ -2,11 +2,9 @@ from appengine_django.models import BaseModel
 from google.appengine.ext import db
 
 # Create your models here.
-class Poll(BaseModel):
-    question = db.StringProperty()
-    pub_date = db.DateTimeProperty('date published')
-
-class Choice(BaseModel):
-    poll = db.ReferenceProperty(Poll)
-    choice = db.StringProperty()
-    votes = db.IntegerProperty()
+class User(db.Model):
+  username = db.StringProperty(required=True)
+  password = db.StringProperty(required=True)
+  reg_date = db.DateTimeProperty(auto_now_add=True)
+  last_login = db.DateTimeProperty()
+  cookie_token = db.StringProperty()

@@ -4,11 +4,16 @@ runtime: python
 api_version: 1
 
 handlers:
+- url: /main.css
+  static_files: site/main.css
+  upload: site/main.css
 - url: /_wave/.*
   script: sa-auto-adder.py
 - url: /assets
   static_dir: /assets
-
+- url: /.*
+  script: site/main.py
+  
 skip_files:
 - ^(.*/)?app\.yaml
 - ^(.*/)?app\.yml

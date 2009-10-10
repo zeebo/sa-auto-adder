@@ -65,7 +65,7 @@ def check_cookie_token(token):
   query.filter('cookie_token =', cookie_token)
   return query.get() != None
 
-def authenticated_redirect(url):
+def redirect_if_authenticated(url):
   def redirect(method):
     def new(request):
       session = sessions.Session()

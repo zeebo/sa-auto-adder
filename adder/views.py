@@ -8,7 +8,7 @@ from appengine_utilities import sessions
 import utils, datetime
 
 
-@utils.authenticated_redirect('/panel')
+@utils.redirect_if_authenticated('/panel')
 def main(request):
   values = {"login_failed":False}
   if request.META["REQUEST_METHOD"] == "POST":    
@@ -23,8 +23,10 @@ def main(request):
 def logout(request):
   return utils.logout(redirect_to='/')
 
+@utils.redirect_if_authenticated('/panel')
 def create(request):
-  return HttpResponse("create page")
+  values = {}
+  return render_to_response('create.html', values)
 
 @utils.require_login
 def panel(request):

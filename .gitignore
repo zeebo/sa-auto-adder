@@ -1,3 +1,4 @@
 index.yaml
 *.pyc
 *.pyo
+sa_settings.py

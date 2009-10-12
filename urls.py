@@ -18,9 +18,12 @@ urlpatterns = patterns('',
     # Example:
     # (r'^foo/', include('foo.urls')),
     (r'^$', 'adder.views.main'),
-    (r'^create/$', 'adder.views.create'),
-    (r'^panel/$', 'adder.views.panel'),
-    (r'^logout/$', 'adder.views.logout'),
+    (r'^create/?$', 'adder.views.create'),
+    (r'^panel/?$', 'adder.views.panel'),
+    (r'^logout/?$', 'adder.views.logout'),
+    (r'^display_post/?$', 'adder.views.display_post'),
+    (r'^cookie/?$', 'adder.views.test_cookie'),
+    (r'^send_cookie/?$', 'adder.views.send_cookie'),
     # Uncomment this for admin:
 #     (r'^admin/', include('django.contrib.admin.urls')),
 )

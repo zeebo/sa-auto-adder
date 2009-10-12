@@ -39,7 +39,7 @@ def create_token():
   session = sessions.Session()
   token = "sa-auto-adder|%s" % hashlib.sha1(str(random.random())).hexdigest()[:10]
   
-  token = "sa-auto-adder|test"
+  token = "sa-auto-adder|%s" % settings.DATABASE_ENGINE
   
   session['token'] = token
   return token

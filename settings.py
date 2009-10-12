@@ -16,6 +16,8 @@
 
 import os
 
+from sa_settings import SA_INFO
+
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
@@ -71,6 +73,8 @@ SECRET_KEY = 'hvhxfm5u=^*v&doo#oq8x*eg8+1&9sxbye@=umutgn^t_sg_nx'
 # your mailserver here.
 EMAIL_HOST = ''
 
+APPEND_SLASH = False
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.load_template_source',
@@ -104,6 +108,7 @@ INSTALLED_APPS = (
      'appengine_django',
      'adder',
      'appengine_utilities',
+     'sa_auth',
 #     'django.contrib.auth',
 #    'django.contrib.contenttypes',
 #     'django.contrib.sessions',

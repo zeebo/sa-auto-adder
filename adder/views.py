@@ -42,7 +42,7 @@ def panel(request):
   return HttpResponse("you made it brah <a href=\"/logout\">logout</a>")
   
 def display_post(request):
-  return HttpResponse(str(request.POST) + str(request.COOKIES))
+  return HttpResponse(str(request.COOKIES))
   
 def send_cookie(request):
   response = HttpResponse("test")

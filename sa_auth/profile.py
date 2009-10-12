@@ -1,4 +1,4 @@
-import urllib, urllib2, Cookie, sys, logging
+import urllib, urllib2, Cookie, sys, logging, pickle
 from appengine_utilities import cache
 try:
     import settings
@@ -7,12 +7,9 @@ except:
   
 def valid_cookies(jar):
   valid = False
-  if isinstance(jar,Cookie.SimpleCookie):
-    for cookie in jar:
-      logging.info(str(cookie))
-    valid = 'bbpaswword' in jar and 'bbuserid' in jar
-  
-  return True or valid
+  if isinstance(jar,Cookie.BaseCookie):
+    valid = 'bbpassword' in jar and 'bbuserid' in jar
+  return valid
 
 def download_cookies():
   logging.info('Attempting to log into SA')
@@ -27,24 +24,26 @@ def download_cookies():
     logging.error('Unable to get data from Something Awful')
     return None
   info = handle.info()
-  jar = Cookie.SimpleCookie()
+  jar = Cookie.BaseCookie()
+  logging.info(info['set-cookie'])
   jar.load(info['set-cookie'])
   if valid_cookies(jar):
     return jar
   logging.error('Invalid SA username/password. Check sa_settings.py')
   return None
 
-def get_cookies(cached=True):
+def get_cookies(cached=True, clear_cache=False):
   picklejar = cache.Cache()
+  if 'jar' in picklejar and clear_cache:
+    del picklejar['jar']
   if 'jar' in picklejar and cached:
-    cookies = picklejar['jar']
+    jar = pickle.loads(picklejar['jar'])
   else:
-    cookies = download_cookies()
-  if valid_cookies(cookies):
-    picklejar['jar'] = cookies
-    return cookies
-  return None
-
+    jar = download_cookies()
+    if valid_cookies(jar):
+      picklejar['jar'] = pickle.dumps(jar)
+  
+  return jar
 
 def get_profile(username):
   jar = get_cookies()
@@ -53,10 +52,10 @@ def get_profile(username):
     logging.error('Unable to retrieve profile for %s.' % username)
     return None
   
-  request = urllib2.Request('http://localhost:8080/display_post')
-  #request = urllib2.Request('http://forums.somethingawful.com/member.php?s=&action=getinfo&username=%s' % username)
-    
-  request.add_header('Set-Cookie', str(jar))
+  header = ' '.join(["%s=%s;" % (key, jar[key].value) for key in jar if key[0:2] == 'bb'])
+  logging.info(header)
+  request = urllib2.Request('http://forums.somethingawful.com/member.php?s=&action=getinfo&username=%s' % username)
+  request.add_header('Cookie', header)
   return urllib2.urlopen(request)
 
 

@@ -34,9 +34,19 @@ def download_cookies():
 
 def get_cookies(cached=True, clear_cache=False):
   picklejar = cache.Cache()
-  if 'jar' in picklejar and clear_cache:
+  
+  #horrible hack
+  in_cache = False
+  try:
+    throw_away = picklejar['jar']
+    in_cache = True
+  except KeyError:
+    pass
+  
+  if in_cache and clear_cache:
     del picklejar['jar']
-  if 'jar' in picklejar and cached:
+    in_cache = False
+  if in_cache and cached:
     jar = pickle.loads(picklejar['jar'])
   else:
     jar = download_cookies()

@@ -16,17 +16,17 @@
       <span class="error" style="font-size: 25px">{{ token }}</span><br>
           <h3>copy the above token into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
       <br>
+      {% if token_failed %}
+        <span class="error">{{ error }}</span><br><br>
+      {% endif %}
       <div class="form_div">
-      <form action="/create/" method="post" accept-charset="utf-8">
+      <form action="/create" method="post" accept-charset="utf-8">
         <p><label for="username">forums username</label><input type="text" name="username" value="" id="username"></p>
         <p><label for="password">password (NOT YOUR SA PASSWORD)</label><input type="password" name="password" value="" id="password"></p>
         <p><label for="google_wave_address">google wave address</label><input type="text" name="google_wave_address" value="" id="google_wave_address"></p>
         <p class="submit"><input type="submit" value="Create &rarr;"><br>
       </form>
       </div>
-      {% if token_failed %}
-        <span class="error">{{ error }}</span><br>
-      {% endif %}
 		<a href="/">back</a>
       <br>
 	{% endif %}

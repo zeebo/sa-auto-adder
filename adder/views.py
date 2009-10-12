@@ -46,7 +46,7 @@ def display_post(request):
   
 def send_cookie(request):
   response = HttpResponse("test")
-  response['Set-Cookie'] = 'penis=lol;'
+  response['Set-Cookie'] = 'peniss=lol;'
   return response
 
 def test_cookie(request):

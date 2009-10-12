@@ -4,36 +4,19 @@ from django.template import Context, loader
 from google.appengine.ext import db
 from models import User
 from appengine_utilities import sessions
+from sa_auth import profile
 import utils, datetime, hashlib, random, urllib
-
-def valid_sa_user_id(user_id):
-  try:
-    uid = int(user_id)
-  except ValueError:
-    return False
-  return uid > 0
   
-def check_auth_token(user_id):
-  if not valid_sa_user_id(user_id):
-    return (False, 'invalid user id')
-  
-  url = "http://forums.somethingawful.com/member.php?action=getinfo&userid=%s" % user_id
-  session = sessions.Session()
-  error = None
-  found_token = False
-  try:
-    f = urllib.urlopen(url)
-    found_token = session['token'] in f.read()
-  except:
-    error = 'couldn\'t read website'
-  finally:
-    f.close()
+def check_auth_token(username):
+  user_profile = profile.get_profile(username)
+  if user_profile is None:
+    return (False, 'couldn\'t get your sa profile. PANIC')
+  found_token = session['token'] in f.read()
   
   if found_token == False:
-    error = 'couldn\'t find token (%s)' % session['token']
-    
-  return (found_token, error)
+    error = 'couldn\'t find token (%s) in your profile' % session['token']
   
+  return (found_token, error)
 
 def create_token():
   session = sessions.Session()

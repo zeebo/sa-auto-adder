@@ -16,6 +16,12 @@
 
 import os
 
+#Be sure to put something resembing this in sa_settings.py in the same directory
+#SA_INFO = {
+# 'username' : 'your_sa_user',
+# 'password' : 'your_sa_password',
+#}
+#or else nothing will work. nothing. AT ALL.
 from sa_settings import SA_INFO
 
 DEBUG = True

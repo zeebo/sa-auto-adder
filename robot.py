@@ -31,6 +31,7 @@ class RobotListener(object):
       wavelet.CreateBlip().GetDocument().SetText("Ping!")
 
 if __name__ == '__main__':
+  logging.info("Robot called")
   event_handler = RobotListener()
   myRobot = robot.Robot('sa-auto-adder', 
       image_url='http://sa-auto-adder.appspot.com/assets/icon.png',

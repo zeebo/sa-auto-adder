@@ -55,7 +55,7 @@ if PARENT_DIR.endswith(".zip"):
 sys.path = [PARENT_DIR,] + sys.path
 
 # Look for a zipped copy of Django.
-have_django_zip = False
+have_django_zip = True
 django_zip_path = os.path.join(PARENT_DIR, 'django.zip')
 
 

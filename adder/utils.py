@@ -5,25 +5,23 @@ from google.appengine.ext import db
 from models import User
 from appengine_utilities import sessions
 from sa_auth import profile
-import utils, datetime, hashlib, random, urllib
+import utils, datetime, hashlib, random, urllib, settings
   
 def check_auth_token(username):
+  session = sessions.Session()
   user_profile = profile.get_profile(username)
+  error = None
   if user_profile is None:
     return (False, 'couldn\'t get your sa profile. PANIC')
-  found_token = session['token'] in f.read()
+  found_token = session['token'] in user_profile.read()
   
   if found_token == False:
     error = 'couldn\'t find token (%s) in your profile' % session['token']
-  
   return (found_token, error)
 
 def create_token():
   session = sessions.Session()
   token = "sa-auto-adder|%s" % hashlib.sha1(str(random.random())).hexdigest()[:10]
-  
-  token = "sa-auto-adder|%s" % settings.DATABASE_ENGINE
-  
   session['token'] = token
   return token
 

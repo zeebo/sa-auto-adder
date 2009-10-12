@@ -28,7 +28,7 @@ def logout(request):
 def create(request):
   values = {}
   if request.META["REQUEST_METHOD"] == "POST":
-    valid, error = utils.check_auth_token(request.POST['user_id'])
+    valid, error = utils.check_auth_token(request.POST['username'])
     if valid:
       return HttpResponse("FOUND YOUR TOKEN OMG")
     else:
@@ -40,14 +40,3 @@ def create(request):
 @utils.require_login
 def panel(request):
   return HttpResponse("you made it brah <a href=\"/logout\">logout</a>")
-  
-def display_post(request):
-  return HttpResponse(str(request.COOKIES))
-  
-def send_cookie(request):
-  response = HttpResponse("test")
-  response['Set-Cookie'] = 'peniss=lol;'
-  return response
-
-def test_cookie(request):
-  return HttpResponse(profile.get_profile("penis"))

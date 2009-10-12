@@ -9,6 +9,12 @@ import utils, datetime, hashlib, random, urllib, settings
   
 def check_auth_token(username):
   session = sessions.Session()
+  
+  query = db.Query(User)
+  query.filter('username =',username)
+  if query.get() is not None:
+    return (False, 'user already has an account')
+    
   user_profile = profile.get_profile(username)
   error = None
   if user_profile is None:
@@ -19,9 +25,15 @@ def check_auth_token(username):
     error = 'couldn\'t find token (%s) in your profile' % session['token']
   return (found_token, error)
 
+#this is a dumb function.
+def create_user(username, password, wave_address):
+  pass_hash = hashlib.sha1(password).hexdigest()
+  new_user = User(username=username, password=pass_hash, wave_address=wave_address)
+  new_user.put()
+
 def create_token():
   session = sessions.Session()
-  token = "sa-auto-adder|%s" % hashlib.sha1(str(random.random())).hexdigest()[:10]
+  token = "sa-auto-adder|%s" % hashlib.sha1(str(random.random())).hexdigest()[:15]
   session['token'] = token
   return token
 

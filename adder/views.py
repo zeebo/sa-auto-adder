@@ -30,11 +30,13 @@ def create(request):
   if request.META["REQUEST_METHOD"] == "POST":
     valid, error = utils.check_auth_token(request.POST['username'])
     if valid:
-      return HttpResponse("FOUND YOUR TOKEN OMG")
+      utils.create_user(request.POST['username'], request.POST['password'], request.POST['google_wave_address'])
+      values['user_created'] = True
     else:
       values['token_failed'] = True
       values['error'] = error
-  values['token'] = utils.create_token()
+  if 'user_created' not in values:
+    values['token'] = utils.create_token()
   return render_to_response('create.html', values)
 
 @utils.require_login

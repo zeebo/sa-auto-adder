@@ -10,7 +10,11 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-      <h3>Copy <span class="error">{{ token }}</span> into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
+	{% if user_created %}
+		woop woop congrats go login <a href="/">here</a>
+	{% else %}
+      <span class="error" style="font-size: 25px">{{ token }}</span><br>
+          <h3>copy the above token into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
       <br>
       <div class="form_div">
       <form action="/create/" method="post" accept-charset="utf-8">
@@ -21,9 +25,11 @@
       </form>
       </div>
       {% if token_failed %}
-        <span class="error">{{ error }}</span>
+        <span class="error">{{ error }}</span><br>
       {% endif %}
+		<a href="/">back</a>
       <br>
+	{% endif %}
   </div>
   <b class="spiffy">
   <b class="spiffy5"></b>

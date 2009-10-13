@@ -6,29 +6,51 @@ from models import User
 from appengine_utilities import sessions
 from sa_auth import profile
 import utils, datetime, hashlib, random, urllib, settings
-  
+
+def get_user_id(profile):
+  try:
+    search_string = '<input type="hidden" name="userid" value="'
+    start = profile.find(search_string) + len(search_string)
+    end = profile.find('">', start)
+    return int(profile[start:end])
+  except IndexError, ValueError:
+    return None
+
 def check_auth_token(username):
   session = sessions.Session()
   
   query = db.Query(User)
   query.filter('username =',username)
   if query.get() is not None:
-    return (False, 'user already has an account')
+    return (False, 'username is taken', None)
     
   user_profile = profile.get_profile(username)
   error = None
   if user_profile is None:
-    return (False, 'couldn\'t get your sa profile. PANIC')
-  found_token = session['token'] in user_profile.read()
+    return (False, 'couldn\'t get your sa profile. PANIC', None)
+  
+  #check for sa user id dupes
+  user_profile_data = user_profile.read()
+  user_id = get_user_id(user_profile_data)
+  if user_id is None:
+    return (False, 'couldn\'t get your sa user id. PANIC', user_id)
+  
+  query = db.Query(User)
+  query.filter('sa_uid =', user_id)
+  if query.get() is not None:
+    return (False, 'that sa account has already been activated', user_id)
+  
+
+  found_token = session['token'] in user_profile_data
   
   if found_token == False:
-    error = 'couldn\'t find token (%s) in your profile' % session['token']
-  return (found_token, error)
+    error = 'couldn\'t find token in your profile' % session['token']
+  return (found_token, error, user_id)
 
 #this is a dumb function.
-def create_user(username, password, wave_address):
+def create_user(username, password, wave_address, user_id):
   pass_hash = hashlib.sha1(password).hexdigest()
-  new_user = User(username=username, password=pass_hash, wave_address=wave_address)
+  new_user = User(username=username, password=pass_hash, wave_address=wave_address, sa_uid=user_id)
   new_user.put()
 
 def create_token():

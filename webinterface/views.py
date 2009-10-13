@@ -28,9 +28,9 @@ def logout(request):
 def create(request):
   values = {}
   if request.META["REQUEST_METHOD"] == "POST":
-    valid, error = utils.check_auth_token(request.POST['username'])
+    valid, error, uid = utils.check_auth_token(request.POST['sa_username'])
     if valid:
-      utils.create_user(request.POST['username'], request.POST['password'], request.POST['google_wave_address'])
+      utils.create_user(request.POST['username'], request.POST['password'], request.POST['google_wave_address'], uid)
       values['user_created'] = True
     else:
       values['token_failed'] = True

@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.doc.XViewMiddleware',
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'webinterface.urls'
 ROOT_PATH = os.path.dirname(__file__)
 TEMPLATE_DIRS = (
     ROOT_PATH + '/templates',

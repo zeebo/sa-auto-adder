@@ -8,7 +8,10 @@ handlers:
 - url: /_wave/.*
   script: robot/robot.py
   
-  
+- url: /icon.png
+  static_files: robot/icon.png
+  upload: robot/icon.png
+
 - url: /favicon.ico
   static_files: webinterface/web_assets/favicon.ico
   upload: webinterface/web_assets/favicon.ico

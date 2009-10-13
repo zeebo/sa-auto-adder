@@ -1,9 +1,6 @@
 import urllib, urllib2, Cookie, sys, logging, pickle
 from appengine_utilities import cache
-try:
-    import settings
-except:
-    import settings_default as settings
+from sa_settings import SA_INFO
   
 def valid_cookies(jar):
   valid = False
@@ -14,8 +11,8 @@ def valid_cookies(jar):
 def download_cookies():
   logging.info('Attempting to log into SA')
   data = {
-    "username": settings.SA_INFO['username'],
-    "password": settings.SA_INFO['password'],
+    "username": SA_INFO['username'],
+    "password": SA_INFO['password'],
     "action": 'login',
   }
   try:

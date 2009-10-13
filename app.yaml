@@ -7,13 +7,11 @@ api_version: 1
 handlers:
 - url: /_wave/.*
   script: robot.py
-- url: /assets
-  static_dir: assets
 - url: /favicon.ico
-  static_files: assets/favicon.ico
-  upload: assets/favicon.ico
+  static_files: webinterface/assets/favicon.ico
+  upload: webinterface/assets/favicon.ico
 - url: /.*
-  script: main.py
+  script: webinterface/main.py
   
 skip_files:
 - ^(.*/)?app\.yaml

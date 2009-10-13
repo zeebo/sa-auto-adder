@@ -1,6 +1,6 @@
 # Django settings for webinterface project.
 import os
-from sa_settings import SA_INFO
+#from sa_settings import SA_INFO
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

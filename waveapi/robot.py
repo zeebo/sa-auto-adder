@@ -26,7 +26,34 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
 
 import robot_abstract
+import model
 
+class RobotCronHandler(webapp.RequestHandler):
+  def __init__(self, robot):
+    self._robot = robot
+  
+  def post(self):
+    """Handles HTTP POST requests."""
+    json_body = self.request.body
+    if not json_body:
+      # TODO(davidbyttow): Log error?
+      return
+
+    json_body = unicode(json_body, 'utf8')
+    logging.info('Cron Incoming: ' + json_body)
+
+    context, event = model.Context(), model.Event({'type':'CRON_EVENT'})
+    
+    self._robot.HandleEvent(event, context)
+    
+    json_response = robot_abstract.SerializeContext(context,
+                                                    self._robot.version)
+    logging.info('Outgoing: ' + json_response)
+
+    # Build the response.
+    self.response.headers['Content-Type'] = 'application/json; charset=utf-8'
+    self.response.out.write(json_response.encode('utf-8'))
+  
 
 class RobotCapabilitiesHandler(webapp.RequestHandler):
   """Handler for serving capabilities.xml given a robot."""
@@ -133,5 +160,6 @@ class Robot(robot_abstract.Robot):
         ('/_wave/capabilities.xml', lambda: RobotCapabilitiesHandler(self)),
         ('/_wave/robot/profile', lambda: RobotProfileHandler(self)),
         ('/_wave/robot/jsonrpc', lambda: RobotEventHandler(self)),
+        ('/_wave/cron', lambda: RobotCronHandler(self)),
     ], debug=debug)
     run_wsgi_app(app)

@@ -28,15 +28,20 @@ def logout(request):
 
 @utils.redirect_if_authenticated('/panel')
 def create(request):
+  required_fields = ['sa_username', 'username', 'password', 'google_wave_address']
   values = {}
   if request.META["REQUEST_METHOD"] == "POST":
-    valid, error, uid = utils.check_auth_token(request.POST['sa_username'])
-    if valid:
-      utils.create_user(request.POST['username'], request.POST['password'], request.POST['google_wave_address'], uid)
-      values['user_created'] = True
+    if all([request.POST.get(field,'').strip() != '' for field in required_fields]):
+      valid, error, uid = utils.check_auth_token(request.POST['sa_username'])
+      if valid:
+        utils.create_user(request.POST['username'], request.POST['password'], request.POST['google_wave_address'], uid)
+        values['user_created'] = True
+      else:
+        values['token_failed'] = True
+        values['error'] = error
     else:
       values['token_failed'] = True
-      values['error'] = error
+      values['error'] = "fill out all the fields dumbo"
   if 'user_created' not in values:
     values['token'] = utils.create_token()
   return render_to_response('create.html', values)
@@ -45,8 +50,10 @@ def create(request):
 def panel(request):
   session = sessions.Session()
   values = {
+    'admin_waves' : utils.get_admin_waves(),
     'waves' : utils.get_waves(),
-    'username' : session['username'],
+    'tasks' : utils.get_tasks(),
+    'username' : utils.get_stored_username(),
   }
   return render_to_response('panel.html', values)
 

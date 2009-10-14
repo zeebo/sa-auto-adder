@@ -1,3 +1,30 @@
+.admin_wave_list {
+  background-color: #74657C;
+  float: left;
+  border-right: 1px solid #D0D0D0;
+  margin: .5em;
+  padding: .5em;
+}
+
+.wave_list {
+  float: left;
+  margin: .5em;
+  padding: .5em;
+}
+
+
+.task_queue {
+  background-color: #74657C;
+  float: right;
+  border-left: 1px solid #D0D0D0;
+  margin: .5em;
+  padding: .5em;
+}
+
+.footer {
+  clear:both;
+}
+
 body {
 	background-color: rgb(20,20,20);
 	text-align: center;

@@ -1,15 +1,59 @@
-<h1>Hello {{username}}</h1>
-<table>
-	<tr>
-		<td>Wave ID</td>
-		<td>Wavelet Id</td>
-		<td>Title</td>
-	</tr>	
-{% for wave in waves %}
-	<tr>
-		<td>{{wave.wave_id}}</td>
-		<td>{{wave.wavelet_id}}</td>
-		<td>{{wave.title}}</td>
-	</tr>
-{% endfor %}
-</table>
+<head>
+	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+</head>
+<h1>SA Auto Adder</h1>
+<div class="main_div">
+  <b class="spiffy">
+  <b class="spiffy1"><b></b></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy5"></b></b>
+  <div class="spiffyfg">
+      <h2>Hello {{username}} (<a href="/logout">logout</a>)</h2>
+      <div class="admin_wave_list">
+          <h3>Waves you administer</h3>
+          <ul>
+              {% if admin_waves %}
+              {% for wave in admin_waves %}
+              <li>
+                  <span class="wave_title">{{wave.title}}</span>
+                  <span class="wave_link"><a href="{{wave.link}}">link pass out</a></span>
+                  <span class="new_posts">(NYI)</span>
+              </li>
+              {% endfor %}
+              {% else %}
+              <li><span class="wave_empty">None</span></li>
+              {% endif %}
+          </ul>
+      </div>
+      <div class="wave_list">
+          <ul>
+          {% for wave in waves %}
+            <li><span class="wave_title">{{wave.title}}</span></li>
+            <li><span class="wave_link"><a href="{{wave.link}}">Join this wave</a></span></li>
+          {% endfor %}
+          </ul>
+      </div>
+      <div class="task_queue">
+          <h3>Tasks pending</h3>
+          <ul>
+              {% if tasks %}
+              {% for task in tasks %}
+              <li><span class="task">{{task.text}}</span></li>
+              {% endfor %}
+              {% else %}
+              <li><span class="task">None</span></li>
+              {% endif %}
+          </ul>
+      </div>
+      <div class="footer">&nbsp;</div>
+  </div>
+  <b class="spiffy">
+  <b class="spiffy5"></b>
+  <b class="spiffy4"></b>
+  <b class="spiffy3"></b>
+  <b class="spiffy2"><b></b></b>
+  <b class="spiffy1"><b></b></b></b>
+</div>
+

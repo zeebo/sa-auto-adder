@@ -8,6 +8,8 @@ from appengine_utilities import sessions
 from sa_auth import profile
 import utils, datetime
 
+def dump(request):
+  return HttpResponse(str(request))
 
 @utils.redirect_if_authenticated('/panel')
 def main(request):

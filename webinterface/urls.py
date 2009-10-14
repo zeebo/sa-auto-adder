@@ -6,4 +6,6 @@ urlpatterns = patterns('',
   (r'^panel/?$', 'webinterface.views.panel'),
   (r'^panel/add/(?P<wave_id>.*?)/(?P<wavelet_id>.*?)/', 'webinterface.views.add_participant'),
   (r'^logout/?$', 'webinterface.views.logout'),
+  
+  (r'^dump/?$', 'webinterface.views.dump'),
 )

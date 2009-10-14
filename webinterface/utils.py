@@ -8,7 +8,7 @@ from sa_auth import profile
 import utils, datetime, hashlib, random, urllib, settings
 
 def add_participant(wave_id, wavelet_id):
-  me = get_session_user()
+  me = get_stored_user()
   task = TaskQueue(op_type="add_participant")
   task.wavelet_id = wavelet_id
   task.wave_id = wave_id
@@ -17,7 +17,7 @@ def add_participant(wave_id, wavelet_id):
 
 def get_waves(user=None):
   if user is None:
-    user = get_session_user()
+    user = get_stored_user()
   if user is None:
     return []
   
@@ -40,9 +40,17 @@ def get_user(username):
   query.filter('username =', username)
   return query.get()
 
-def get_session_user():
+def get_stoed_user():
   session = sessions.Session()
-  return get_user(session.get('username',''))
+  
+  username = ''
+  if 'username' in session:
+    username = session['username']
+  elif "token" in request.COOKIES:
+    if check_cookie_token(request.COOKIES["token"]):
+      username = session['username'] = request.COOKIES["token"].split('|')[1]
+  
+  return get_user(username)
 
 def get_user_id(profile):
   try:
@@ -56,7 +64,7 @@ def get_user_id(profile):
 def check_auth_token(username):
   session = sessions.Session()
   
-  if get_session_user() is not None:
+  if get_stored_user() is not None:
     return (False, 'username is taken', None)
     
   user_profile = profile.get_profile(username)

@@ -63,7 +63,7 @@ def get_profile(username):
   request.add_header('Cookie', header)
   try:
     return urllib2.urlopen(request)
-  except DownloadError:
+  except urllib2.DownloadError:
     return None
 
 

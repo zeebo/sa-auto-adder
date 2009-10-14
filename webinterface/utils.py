@@ -112,6 +112,11 @@ def login(user, redirect_to, set_cookie):
   session = sessions.Session()
   session['username'] = user.username
   user.last_login = datetime.datetime.now()
+  
+  if 'redirected_from' in session:
+    redirect_to = session['redirected_from']
+    del session['redirected_from']
+  
   response = HttpResponseRedirect(redirect_to)  
   if set_cookie:
     utils.set_cookie_header(response, user)    
@@ -135,6 +140,7 @@ def require_login(method):
         session['username'] = request.COOKIES["token"].split('|')[1]
         return method(request, *args, **kwargs)
     
+    session['redirected_from'] = request.META['PATH_INFO']
     return HttpResponseRedirect('/')
   return new
 

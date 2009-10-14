@@ -19,10 +19,11 @@ def get_waves(user=None):
   
   for wavelet in query:
     wavelet_dict = {}
-    for p in wavelet.properties():
-      if not isinstance(wavelet[p], db.ReferenceProperty):
-        wavelet_dict[p] = wavelet[p]
-      return_list.append(wavelet_dict)
+    properties = wavelet.properties()
+    for p in properties:
+      if not isinstance(properties[p], db.ReferenceProperty):
+        wavelet_dict[p] = getattr(wavelet, p)
+    return_list.append(wavelet_dict)
   
   return return_list
 

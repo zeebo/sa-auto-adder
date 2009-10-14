@@ -59,7 +59,7 @@ def get_profile(username):
     return None
   
   header = ' '.join(["%s=%s;" % (key, jar[key].value) for key in jar if key[0:2] == 'bb'])
-  request = urllib2.Request('http://forums.somethingawful.com/member.php?s=&action=getinfo&username=%s' % username)
+  request = urllib2.Request('http://forums.somethingawful.com/member.php?s=&action=getinfo&username=%s' % urllib.quote(username, ''))
   request.add_header('Cookie', header)
   try:
     return urllib2.urlopen(request)

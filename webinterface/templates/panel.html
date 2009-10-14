@@ -30,8 +30,10 @@
       <div class="wave_list">
           <ul>
           {% for wave in waves %}
-            <li><span class="wave_title">{{wave.title}}</span></li>
-            <li><span class="wave_link"><a href="{{wave.link}}">Join this wave</a></span></li>
+            <li>
+                <span class="wave_title">{{wave.title}}</span>
+                <span class="wave_link"><a href="{{wave.link}}">Join this wave</a></span>
+            </li>
           {% endfor %}
           </ul>
       </div>

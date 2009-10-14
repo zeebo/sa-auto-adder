@@ -41,10 +41,27 @@ class EventListener(object):
           #Option 4. Do nothing (easiest to code!)
           logging.debug('Added to a wave with no matching admin')
         else:
-          data = WaveletInfo(wave_id=wavelet.waveId, wavelet_id=wavelet.waveletId, admin=admin)
+          data = WaveletInfo(wave_id=wavelet.waveId,
+                             wavelet_id=wavelet.waveletId,
+                             admin=admin,
+                             root_blip=wavelet.rootBlipId,
+                             title=wavelet.title)
           data.put()
       else:
         logging.error("Attmped to be added to a wavelet I was supposed to be in already!")
+  
+  def on_blip_submitted(self, properties, context):
+    for blip in context.GetBlips():
+      blip_wavelet = context.GetWaveletById(blip.waveletId)
+      if blip.IsRoot() and blip_wavelet is not None:
+        query = db.Query(WaveletInfo)
+        query.filter('root_blip =', blip.blipId)
+        wavelet = query.get()
+        if wavelet is not None:
+          if blip.waveletId == wavelet.wavelet_id:
+            if wavelet.title != blip_wavelet.title:
+              wavelet.title = blip_wavelet.title
+              wavelet.put()
         
   def on_cron_event(self, properties, context):
     logging.debug("GOT A CRON EVENT!")
@@ -53,7 +70,7 @@ class EventListener(object):
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 
       image_url='http://sa-auto-adder.appspot.com/icon.png',
-      version='2.11',
+      version='2.13',
       profile_url='http://sa-auto-adder.appspot.com/')
   myRobot.RegisterListener(EventListener())
   #myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 60)

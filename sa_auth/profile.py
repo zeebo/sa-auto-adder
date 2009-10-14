@@ -18,11 +18,10 @@ def download_cookies():
   try:
       handle = urllib2.urlopen('http://forums.somethingawful.com/account.php', urllib.urlencode(data))
   except urllib2.HTTPError:
-    logging.error('Unable to get data from Something Awful')
+    logging.info('Unable to get data from Something Awful')
     return None
   info = handle.info()
   jar = Cookie.BaseCookie()
-  logging.info(info['set-cookie'])
   jar.load(info['set-cookie'])
   if valid_cookies(jar):
     return jar
@@ -60,10 +59,12 @@ def get_profile(username):
     return None
   
   header = ' '.join(["%s=%s;" % (key, jar[key].value) for key in jar if key[0:2] == 'bb'])
-  logging.info(header)
   request = urllib2.Request('http://forums.somethingawful.com/member.php?s=&action=getinfo&username=%s' % username)
   request.add_header('Cookie', header)
-  return urllib2.urlopen(request)
+  try:
+    return urllib2.urlopen(request)
+  except DownloadError:
+    return None
 
 
 #SA_LOGIN = {

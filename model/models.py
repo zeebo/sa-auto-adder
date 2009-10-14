@@ -18,3 +18,7 @@ class WaveletInfo(db.Model):
   admin = db.ReferenceProperty(User,required=True)
   title = db.StringProperty()
   root_blip = db.StringProperty()
+
+class TaskQueue(db.Expando):
+  time_added = db.DateTimeProperty(auto_now_add=True)
+  op_type = db.StringProperty(required=True)

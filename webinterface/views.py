@@ -47,3 +47,8 @@ def panel(request):
     'username' : session['username'],
   }
   return render_to_response('panel.html', values)
+
+@utils.require_login
+def add_participant(request, wave_id, wavelet_id):
+  utils.add_participant(wave_id, wavelet_id)
+  return HttpResponseRedirect('/panel')

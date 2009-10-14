@@ -2,10 +2,18 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from google.appengine.ext import db
-from model.models import User, WaveletInfo
+from model.models import User, WaveletInfo, TaskQueue
 from appengine_utilities import sessions
 from sa_auth import profile
 import utils, datetime, hashlib, random, urllib, settings
+
+def add_participant(wave_id, wavelet_id):
+  me = get_session_user()
+  task = TaskQueue(op_type="add_participant")
+  task.wavelet_id = wavelet_id
+  task.wave_id = wave_id
+  task.participant_id = me.wave_address
+  task.put()
 
 def get_waves(user=None):
   if user is None:
@@ -117,16 +125,16 @@ def set_cookie_header(response, user):
   user.cookie_token = cookie_token
 
 def require_login(method):
-  def new(request):
+  def new(request, *args, **kwargs):
     session = sessions.Session()
     if 'username' in session:
-      return method(request)
-
+      return method(request, *args, **kwargs)
+    
     if "token" in request.COOKIES:
       if check_cookie_token(request.COOKIES["token"]):
         session['username'] = request.COOKIES["token"].split('|')[1]
-        return method(request)
-        
+        return method(request, *args, **kwargs)
+    
     return HttpResponseRedirect('/')
   return new
 
@@ -146,15 +154,15 @@ def check_cookie_token(token):
 
 def redirect_if_authenticated(url):
   def redirect(method):
-    def new(request):
+    def new(request, *args, **kwargs):
       session = sessions.Session()
       if 'username' in session:
         return HttpResponseRedirect(url)
-
+      
       if "token" in request.COOKIES:
         if check_cookie_token(request.COOKIES["token"]):
           session['username'] = request.COOKIES["token"].split('|')[1]
           return HttpResponseRedirect(url)
-      return method(request)
-    return new  
+      return method(request, *args, **kwargs)
+    return new
   return redirect

@@ -3,8 +3,21 @@ from waveapi import model
 from waveapi import robot
 from waveapi import ops
 from google.appengine.ext import db
-from model.models import WaveletInfo, User
+from model.models import WaveletInfo, User, TaskQueue
 import logging
+
+class TaskHandler(object):
+  def __init__(self, context):
+    self._context = context
+  
+  def do(self, task):
+    getattr(self, "do_%s" % task.op_type)(task, self._context)
+  
+  def do_add_participant(self, task, context):
+    builder = ops.OpBuilder(context)
+    builder.WaveletAddParticipant(task.wave_id, task.wavelet_id, task.participant_id)
+    logging.debug("Added participant %s" % task.participant_id)
+  
 
 class EventListener(object):    
   def on_wavelet_self_removed(self, properties, context):
@@ -22,7 +35,7 @@ class EventListener(object):
     #    if data.wavelet_ids == []:
     #      data.delete()
     logging.error('HOLY FUCK IT WAS REMOVED')
-
+  
   def on_wavelet_self_added(self, properties, context):
     for wavelet in context.GetWavelets():
       query = db.Query(WaveletInfo)
@@ -62,16 +75,19 @@ class EventListener(object):
             if wavelet.title != blip_wavelet.title:
               wavelet.title = blip_wavelet.title
               wavelet.put()
-        
+  
   def on_cron_event(self, properties, context):
-    logging.debug("GOT A CRON EVENT!")
+    handler = TaskHandler(context)
+    for task in TaskQueue.all():
+      handler.do(task)
+      task.delete()
 
 
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 
       image_url='http://sa-auto-adder.appspot.com/icon.png',
-      version='2.13',
+      version='2.15',
       profile_url='http://sa-auto-adder.appspot.com/')
   myRobot.RegisterListener(EventListener())
-  #myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 60)
+  myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 10)
   myRobot.Run(debug=True)

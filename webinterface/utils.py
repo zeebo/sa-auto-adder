@@ -2,10 +2,39 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from google.appengine.ext import db
-from models import User
+from model.models import User, WaveletInfo
 from appengine_utilities import sessions
 from sa_auth import profile
 import utils, datetime, hashlib, random, urllib, settings
+
+def get_waves(user=None):
+  if user is None:
+    user = get_session_user()
+  if user is None:
+    return []
+  
+  query = db.Query(WaveletInfo)
+  query.filter('admin =', user)
+  return_list = []
+  
+  for wavelet in query:
+    return_list.append({
+      'wave_id' : wavelet.wave_id,
+      'wavelet_id' : wavelet.wavelet_id,
+      'users_added' : wavelet.users_added,
+      'admin' : wavelet.admin.wave_address
+    })
+  
+  return return_list
+
+def get_user(username):
+  query = db.Query(User)
+  query.filter('username =', username)
+  return query.get()
+
+def get_session_user():
+  session = sessions.Session()
+  return get_user(session.get('username',''))
 
 def get_user_id(profile):
   try:
@@ -19,9 +48,7 @@ def get_user_id(profile):
 def check_auth_token(username):
   session = sessions.Session()
   
-  query = db.Query(User)
-  query.filter('username =',username)
-  if query.get() is not None:
+  if get_session_user() is not None:
     return (False, 'username is taken', None)
     
   user_profile = profile.get_profile(username)

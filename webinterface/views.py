@@ -3,7 +3,7 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import Context, loader
 from google.appengine.ext import db
-from models import User
+from model.models import User
 from appengine_utilities import sessions
 from sa_auth import profile
 import utils, datetime
@@ -41,4 +41,9 @@ def create(request):
 
 @utils.require_login
 def panel(request):
-  return HttpResponse("you made it brah <a href=\"/logout\">logout</a>")
+  session = sessions.Session()
+  values = {
+    'waves' : utils.get_waves(),
+    'username' : session['username'],
+  }
+  return render_to_response('panel.html', values)

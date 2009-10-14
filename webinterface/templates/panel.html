@@ -1,0 +1,15 @@
+<h1>Hello {{username}}</h1>
+<table>
+	<tr>
+		<td>Wave ID</td>
+		<td>Wavelet Id</td>
+		<td>Admin</td>
+	</tr>	
+{% for wave in waves %}
+	<tr>
+		<td>{{wave.wave_id}}</td>
+		<td>{{wave.wavelet_id}}</td>
+		<td>{{wave.admin}}</td>
+	</tr>
+{% endfor %}
+</table>

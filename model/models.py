@@ -9,3 +9,10 @@ class User(db.Model):
   sa_uid = db.IntegerProperty(required=True)
   last_login = db.DateTimeProperty()
   cookie_token = db.StringProperty()
+
+
+class WaveletInfo(db.Model):
+  wave_id = db.StringProperty(required=True)
+  users_added = db.StringListProperty()
+  wavelet_id = db.StringProperty(required=True)
+  admin = db.ReferenceProperty(User,required=True)

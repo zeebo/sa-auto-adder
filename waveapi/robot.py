@@ -27,6 +27,7 @@ from google.appengine.ext.webapp.util import run_wsgi_app
 
 import robot_abstract
 import model
+import ops
 
 class RobotCronHandler(webapp.RequestHandler):
   def __init__(self, robot):
@@ -42,7 +43,7 @@ class RobotCronHandler(webapp.RequestHandler):
     json_body = unicode(json_body, 'utf8')
     logging.info('Cron Incoming: ' + json_body)
 
-    context, event = model.Context(), model.Event({'type':'CRON_EVENT'})
+    context, event = ops._ContextImpl(), model.Event({'type':'CRON_EVENT'})
     
     self._robot.HandleEvent(event, context)
     

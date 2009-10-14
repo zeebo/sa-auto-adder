@@ -1,5 +1,5 @@
 application: sa-auto-adder
-version: 2a
+version: 2b
 runtime: python
 api_version: 1
 

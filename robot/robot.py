@@ -55,7 +55,7 @@ class EventListener(object):
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 
       image_url='http://sa-auto-adder.appspot.com/icon.png',
-      version='2.09',
+      version='2.10',
       profile_url='http://sa-auto-adder.appspot.com/')
   myRobot.RegisterListener(EventListener())
   myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 60)

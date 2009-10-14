@@ -129,7 +129,8 @@ class Robot(object):
 
     lines.append('<w:capabilities>')
     for capability in self._handlers:
-      lines.append('  <w:capability name="%s"/>' % capability)
+      if str(capability) is not "CRON_EVENT":
+        lines.append('  <w:capability name="%s"/>' % capability)
     lines.append('</w:capabilities>')
 
     if self.cron_jobs:

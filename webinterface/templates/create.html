@@ -1,7 +1,7 @@
 <head>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
-<h1>Create An Account</h1>
+<h1 class="title">Create An Account</h1>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -13,11 +13,11 @@
 	{% if user_created %}
 		woop woop congrats go login <a href="/">here</a>
 	{% else %}
-      <span class="error" style="font-size: 25px">{{ token }}</span><br>
-          <h3>copy the above token into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
+      <h1 class="info">{{ token }}</h1><br>
+          <h3>copy the above token in it's entirety (including the sa-auto-adder| part)<br> into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
       <br>
       {% if token_failed %}
-        <span class="error">{{ error }}</span><br><br>
+        <h2 class="error">{{ error }}</h2><br>
       {% endif %}
       <div class="form_div">
       <form action="/create" method="post" accept-charset="utf-8">

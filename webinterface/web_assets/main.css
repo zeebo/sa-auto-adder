@@ -1,28 +1,17 @@
-.admin_wave_list {
-  background-color: #74657C;
+.title {
+  margin-bottom: 10px;
+}
+.links {
   float: left;
-  border-right: 1px solid #D0D0D0;
-  margin: .5em;
-  padding: .5em;
+  border-right: 1px solid white;
+  margin: 1em;
+  padding: 1em;
 }
-
-.wave_list {
-  float: left;
-  margin: .5em;
-  padding: .5em;
-}
-
-
-.task_queue {
-  background-color: #74657C;
-  float: right;
-  border-left: 1px solid #D0D0D0;
-  margin: .5em;
-  padding: .5em;
-}
-
 .footer {
-  clear:both;
+  clear: both;
+}
+.links ul {
+  display: block;
 }
 
 body {
@@ -37,6 +26,10 @@ a {
 }
 .error {
   color: rgb(220,100,100);
+  font-weight: bold;
+}
+.info {
+  color: rgb(100,100,220);
   font-weight: bold;
 }
 .main_div {
@@ -111,4 +104,4 @@ div.form_div {
   border-left:1px solid #50444a;
   border-right:1px solid #50444a}
 .spiffyfg{background:#64555C}
-.spiffyfg h2,h3 { margin: 0; }
+.spiffyfg h2,h3,h1 { margin: 0px; }

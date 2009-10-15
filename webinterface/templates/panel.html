@@ -1,7 +1,7 @@
 <head>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
-<h1>SA Auto Adder</h1>
+<h1 class="title">Control Panel : Home</h1>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -10,44 +10,17 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-      <h2>Hello {{username}} (<a href="/logout">logout</a>)</h2>
-      <div class="admin_wave_list">
-          <h3>Waves you administer</h3>
+      <h2>Hello {{username}} (<a href="/logout">logout</a>)</h2><br>
+      <h2 class="error">DO NOT REMOVE THE BOT FROM THE WAVE. USE THE ADMIN CONTROLS</h2><br>
+      <div class="links">
           <ul>
-              {% if admin_waves %}
-              {% for wave in admin_waves %}
-              <li>
-                  <span class="wave_title">{{wave.title}}</span>
-                  <span class="wave_link"><a href="{{wave.link}}">link pass out</a></span>
-                  <span class="new_posts">(NYI)</span>
-              </li>
-              {% endfor %}
-              {% else %}
-              <li><span class="wave_empty">None</span></li>
-              {% endif %}
+              <li><a href="/panel/admin">Administer waves</a></li>
+              <li><a href="/panel/waves">Join waves</a></li>
+              <li><a href="/panel/queue">Task queue</a> ({{tasks|length}})</li>
           </ul>
       </div>
-      <div class="wave_list">
-          <ul>
-          {% for wave in waves %}
-            <li>
-                <span class="wave_title">{{wave.title}}</span>
-                <span class="wave_link"><a href="{{wave.link}}">Join this wave</a></span>
-            </li>
-          {% endfor %}
-          </ul>
-      </div>
-      <div class="task_queue">
-          <h3>Tasks pending</h3>
-          <ul>
-              {% if tasks %}
-              {% for task in tasks %}
-              <li><span class="task">{{task.text}}</span></li>
-              {% endfor %}
-              {% else %}
-              <li><span class="task">None</span></li>
-              {% endif %}
-          </ul>
+      <div class="events">
+          Recent Events
       </div>
       <div class="footer">&nbsp;</div>
   </div>

@@ -1,7 +1,7 @@
 <head>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
-<h1>SA Auto Adder</h1>
+<h1 class="title">SA Auto Adder</h1>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -11,13 +11,13 @@
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
     <form action="/" method="post" accept-charset="utf-8">
+        {% if login_failed %}
+			<h2 class="error">Login incorrect</h2><br>
+		{% endif %}
 		<label for="username">user</label> <input class="right" type="text" name="username" value="" id="username"></br>
 		<label for="password">pass</label> <input class="right"type="password" name="password" value="" id="password"></br>
 		<input class="right" type="checkbox" value="remember" name="remember"><label for="remember">remember me</label></br>
 		<input type="submit" value="Login &rarr;"></br>
-		{% if login_failed %}
-			<span class="error">Login incorrect</span>
-		{% endif %}
 	</form>
 	<a href="/create">Create an account</a>
   </div>

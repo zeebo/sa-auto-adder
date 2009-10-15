@@ -37,7 +37,7 @@ class EventListener(object):
     logging.error('HOLY FUCK IT WAS REMOVED')
   
   def on_wavelet_self_added(self, properties, context):
-    self.on_cron_event(properties, context
+    self.on_cron_event(properties, context)
     for wavelet in context.GetWavelets():
       query = db.Query(WaveletInfo)
       query.filter('wave_id =', wavelet.waveId)

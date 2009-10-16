@@ -61,7 +61,7 @@ class EventListener(object):
                              title=wavelet.title)
           data.put()
       else:
-        logging.error("Attmped to be added to a wavelet I was supposed to be in already!")
+        logging.debug("Added to a wavelet I was supposed to be in already!")
   
   def on_blip_submitted(self, properties, context):
     for blip in context.GetBlips():
@@ -81,7 +81,6 @@ class EventListener(object):
     for task in TaskQueue.all():
       handler.do(task)
       task.delete()
-
 
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 

@@ -75,15 +75,16 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
-    'appengine_utilities',
-    'sa_auth',
+#    'appengine_utilities',
+#    'sa_auth',
+#    'utils',
     #'django.contrib.auth',
     'django.contrib.contenttypes',
     #'django.contrib.sessions',
     'django.contrib.sites',
 )
 
-
+"""
 __author__="jbowman"
 __date__ ="$Sep 11, 2009 4:20:11 PM$"
  
@@ -133,3 +134,4 @@ rotmodel = {
     "RETRY_INTERVAL": .2,
 }
     
+"""

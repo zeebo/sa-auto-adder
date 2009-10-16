@@ -10,13 +10,13 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-	{% if user_created %}
+	{% if valid %}
 		woop woop congrats go login <a href="/">here</a>
 	{% else %}
       <h1 class="info">{{ token }}</h1><br>
           <h3>copy the above token in it's entirety (including the sa-auto-adder| part)<br> into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
       <br>
-      {% if token_failed %}
+      {% if error %}
         <h2 class="error">{{ error }}</h2><br>
       {% endif %}
       <div class="form_div">

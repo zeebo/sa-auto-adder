@@ -11,17 +11,16 @@ handlers:
 - url: /icon.png
   static_files: robot/icon.png
   upload: robot/icon.png
-
-- url: /favicon.ico
-  static_files: webinterface/web_assets/favicon.ico
-  upload: webinterface/web_assets/favicon.ico
   
 - url: /assets
-  static_dir: webinterface/web_assets
+  static_dir: assets
+
+- url: /favicon.ico
+  static_files: assets/favicon.ico
+  upload: assets/favicon.ico
   
 - url: /.*
   script: main.py
-  
 skip_files:
 - ^(.*/)?app\.yaml
 - ^(.*/)?app\.yml

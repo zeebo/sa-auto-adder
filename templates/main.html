@@ -10,9 +10,9 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-    <form action="/" method="post" accept-charset="utf-8">
+    <form action="/login" method="post" accept-charset="utf-8">
         {% if login_failed %}
-			<h2 class="error">Login incorrect</h2><br>
+			<h2 class="error">{{login_failed}}</h2><br>
 		{% endif %}
 		<label for="username">user</label> <input class="right" type="text" name="username" value="" id="username"></br>
 		<label for="password">pass</label> <input class="right"type="password" name="password" value="" id="password"></br>

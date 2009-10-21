@@ -40,7 +40,8 @@ class CreatePage(NotAuthenticatedHandler):
 
 class CreateAction(NotAuthenticatedHandler):
   def post(self):
-    self.response.out.write(self.request.arguments())
+    self.auth.login_as(self.user_maker.make_user(self.request))
+    self.redirect('/create')
 
     
 application = webapp.WSGIApplication([

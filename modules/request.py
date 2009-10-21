@@ -1,19 +1,19 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from modules.auth import Auth
-from modules.usermaker import UserMaker
+from modules.user_maker import UserMaker
 import os, logging
 
-def NotAuthenticatedBuilder(otherwise):
+def NotAuthenticatedBuilder(redirect):
   class NotAuthenticatedHandler(RequestHandler):
-    @RequestHandler.all_require_authentication(to_be=False, otherwise=otherwise)
+    @RequestHandler.all_require_authentication(to_be=False, otherwise=redirect)
     def __new__(): pass
   
   return NotAuthenticatedHandler
 
-def AuthenticatedBuilder(otherwise):
+def AuthenticatedBuilder(redirect):
   class AuthenticatedHandler(RequestHandler):
-    @RequestHandler.all_require_authentication(to_be=True, otherwise=otherwise)
+    @RequestHandler.all_require_authentication(to_be=True, otherwise=redirect)
     def __new__(): pass
 
   return AuthenticatedHandler
@@ -63,14 +63,16 @@ class RequestHandler(webapp.RequestHandler):
   @classmethod
   def all_require_authentication(self, to_be, otherwise):
     """Only decorate __new__ with this decorator!"""
+    decorator = RequestHandler.require_authentication
     def new_decorator(method):
       if method.__name__ != '__new__':
         return method #Dont do anything
       def __new__(cls, *args, **kwargs):
         if not getattr(cls, '__decorated', False):
-          cls.get = RequestHandler.require_authentication(to_be=to_be, otherwise=otherwise)(cls.get)
-          cls.post = RequestHandler.require_authentication(to_be=to_be, otherwise=otherwise)(cls.post)
+          cls.get = decorator(to_be=to_be, otherwise=otherwise)(cls.get)
+          cls.post = decorator(to_be=to_be, otherwise=otherwise)(cls.post)
           cls.__decorated = True
+          cls.otherwise = property(lambda self: otherwise)
         return super(cls.__class__, cls).__new__(cls, *args, **kwargs)
       return __new__
     return new_decorator

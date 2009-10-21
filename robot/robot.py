@@ -37,6 +37,7 @@ class EventListener(object):
     logging.error('HOLY FUCK IT WAS REMOVED')
   
   def on_wavelet_self_added(self, properties, context):
+    self.on_cron_event(properties, context)
     for wavelet in context.GetWavelets():
       query = db.Query(WaveletInfo)
       query.filter('wave_id =', wavelet.waveId)
@@ -64,6 +65,7 @@ class EventListener(object):
         logging.debug("Added to a wavelet I was supposed to be in already!")
   
   def on_blip_submitted(self, properties, context):
+    self.on_cron_event(properties, context)
     for blip in context.GetBlips():
       blip_wavelet = context.GetWaveletById(blip.waveletId)
       if blip.IsRoot() and blip_wavelet is not None:

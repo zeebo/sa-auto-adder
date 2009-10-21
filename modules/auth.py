@@ -15,7 +15,7 @@ class Auth(RequestObject):
     query.filter('password =', hashlib.sha1(password).hexdigest())
     self.user = query.get()
     if self.user is None:
-      self.__error.append('login failed')
+      self.add_error('login failed')
   
   def logout(self):
     self.user = None

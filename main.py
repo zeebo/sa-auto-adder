@@ -1,6 +1,6 @@
 from google.appengine.ext import webapp
 from google.appengine.ext.webapp.util import run_wsgi_app
-from modules.myrequesthandler import AuthenticatedBuilder, NotAuthenticatedBuilder
+from modules.request import AuthenticatedBuilder, NotAuthenticatedBuilder
 import logging
 
 #this shit is so meta
@@ -29,11 +29,18 @@ class LogoutAction(AuthenticatedHandler):
 
 class CreatePage(NotAuthenticatedHandler):
   def get(self):
-    self.render('create.html', {})
+    if self.request.get('newtoken'):
+      self.user_maker.generate_token()
+      self.redirect(self.request.path)
+    else:
+      self.render('create.html', {
+                                  'token' : self.user_maker.token,
+                                  'error' : self.user_maker.error
+                                 })
 
 class CreateAction(NotAuthenticatedHandler):
   def post(self):
-    self.render('create.html', {})
+    self.response.out.write(self.request.arguments())
 
     
 application = webapp.WSGIApplication([

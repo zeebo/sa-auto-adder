@@ -10,10 +10,7 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-	{% if valid %}
-		woop woop congrats go login <a href="/">here</a>
-	{% else %}
-      <h1 class="info">{{ token }}</h1><br>
+     <h1 class="info">{{ token }}</h1><br>
           <h3>copy the above token in it's entirety (including the sa-auto-adder| part)<br> into your <a href="http://forums.somethingawful.com/member.php?action=editprofile">profile</a> under location, interests or occupation.</h3>
       <br>
       {% if error %}
@@ -28,9 +25,8 @@
         <p class="submit"><input type="submit" value="Create &rarr;"><br>
       </form>
       </div>
-		<a href="/">back</a>
+		<a href="/">back</a>&nbsp;-&nbsp;<a href="?newtoken=1">new token</a>
       <br>
-	{% endif %}
   </div>
   <b class="spiffy">
   <b class="spiffy5"></b>

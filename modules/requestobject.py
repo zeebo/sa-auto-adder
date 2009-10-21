@@ -22,6 +22,9 @@ class RequestObject(object):
       return self.__error.pop()
     except IndexError:
       return None
+  
+  def add_error(self, error):
+    self.__error.append(error)
 
   def do_init(self):
     pass

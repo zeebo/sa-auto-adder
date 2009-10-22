@@ -1,10 +1,14 @@
 import pages
-urls = {
+import logging
+from modules import url_list
+
+
+urls = url_list.UrlList({
   'auth':{
     'base_url':('', None),
     'pages':[
       ('Home', '/', pages.LoginPage),
-      ('Create User', '/create', pages.CreatePage),
+      ('Create Account', '/create', pages.CreatePage),
     ],
     'right-pages':[],
     'actions':[
@@ -21,21 +25,10 @@ urls = {
       ('Task Queue', '/queue', pages.PanelHandler),
     ],
     'right-pages':[
-      ('Edit Account', '/edit', pages.PanelHandler),
       ('Logout', '/logout', pages.LogoutAction),
+      ('Edit Account', '/edit', pages.PanelHandler),
     ],
     'actions':[],
   },
-}
+})
 
-def build_url_list():
-  return_list = []
-  for section_key in urls:
-    section = urls[section_key]
-    base_url = section['base_url'][0]
-    if section['base_url'][1] is not None:
-      return_list.append(section['base_url'])
-    for subsection in ['pages', 'right-pages', 'actions']:
-      for page in section[subsection]:
-        return_list.append((base_url + page[1], page[2]))
-  return return_list

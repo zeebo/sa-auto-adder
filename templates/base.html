@@ -1,7 +1,11 @@
 <head>
+    <title>SA Auto Adder {{section}}</title>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
+	<script type="text/javascript">
+	    {% block javascript %}
+	    {% endblock %}
+	</script>
 </head>
-<div class='title'>{{path}}</div>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -10,12 +14,17 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
+     {% block navlist %}
 	<div id="navcontainer">
 	<ul id="navlist">
-	{% block navlist %}{% endblock %}
+        {% for page in left_links %}
+        <li{% ifequal page.path path %} id="active"{% endifequal %}><a href="{{page.path}}"{% ifequal page.path path %} id="current"{% endifequal %}>{{page.name}}</a></li>{% endfor %}
+        {% for page in right_links %}
+        <li class="right"{% ifequal page.path path %} id="active"{% endifequal %}><a href="{{page.path}}"{% ifequal page.path path %} id="current"{% endifequal %}>{{page.name}}</a></li>{% endfor %}
 	</ul>
 	</div>
 	<br>
+	{% endblock %}
 	{% block content %}{% endblock %}
   </div>
   <b class="spiffy">

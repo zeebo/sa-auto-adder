@@ -1,8 +1,4 @@
 {% extends "base.html" %}
-{% block navlist %}
-	<li id="active"><a href="/" id="current">Login</a></li>
-	<li><a href="/create">Create Account</a></li>
-{% endblock %}
 {% block content %}
     <form action="/login" method="post" accept-charset="utf-8">
         {% if login_failed %}

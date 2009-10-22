@@ -33,12 +33,21 @@ class RequestHandler(webapp.RequestHandler):
     if key in self.__template:
       del self.__template[key]
   
+  def get_template_value(self, key):
+    return self.__template.get(key, None)
+  
   def render(self, filename, values):
     values.update(self.__template)
     path = os.path.join('templates', filename)
     self.response.out.write(template.render(path, values))
   
   def initialize(self, request, response):
+    urls = self.get_template_value('urls')
+    section = urls.get_section_name(request.path)
+    self.set_template_value('path', request.path)
+    self.set_template_value('section', section)
+    self.set_template_value('left_links', urls.get_left_links(section))
+    self.set_template_value('right_links', urls.get_right_links(section))
     self.auth.check_cookies(request.cookies)
     super(RequestHandler, self).initialize(request, response)
   
@@ -49,13 +58,6 @@ class RequestHandler(webapp.RequestHandler):
   @property
   def user_maker(self):
     return self.__user_maker
-    
-  @classmethod
-  def sends_request_url(self, method):
-    def new_function(self, *args, **kwargs):
-      self.set_template_value('path', self.request.path)
-      method(self, *args, **kwargs)
-    return new_function
     
   #I find the following code to be so cool and meta
   #it gives me butterflies in my stomache. Python <3
@@ -81,12 +83,7 @@ class RequestHandler(webapp.RequestHandler):
   def all_require_authentication(self, to_be, otherwise):
     """Only decorate __new__ with this decorator!"""
     
-    def decorator(to_be, otherwise):
-      def the_decorator(method):
-        method = RequestHandler.require_authentication(to_be, otherwise)(method)
-        method = RequestHandler.sends_request_url(method)
-        return method
-      return the_decorator
+    decorator = RequestHandler.require_authentication
     
     def new_decorator(method):
       if method.__name__ != '__new__':

@@ -30,7 +30,7 @@ class LogoutAction(AuthenticatedHandler):
   def get(self):
     self.auth.logout()
     self.auth.del_cookies(self.response)
-    self.redirect('/')
+    self.render('logout.html', {})
 
 class CreatePage(NotAuthenticatedHandler):
   def get(self):

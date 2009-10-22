@@ -23,8 +23,18 @@ class RequestHandler(webapp.RequestHandler):
   def __init__(self):
     self.__auth = Auth()
     self.__user_maker = UserMaker()
+    self.__template = {}
+  
+  def set_template_value(self, key, value):
+    """These values overwrite anything sent to render"""
+    self.__template[key] = value
+  
+  def del_template_value(self, key):
+    if key in self.__template:
+      del self.__template[key]
   
   def render(self, filename, values):
+    values.update(self.__template)
     path = os.path.join('templates', filename)
     self.response.out.write(template.render(path, values))
   
@@ -39,6 +49,13 @@ class RequestHandler(webapp.RequestHandler):
   @property
   def user_maker(self):
     return self.__user_maker
+    
+  @classmethod
+  def sends_request_url(self, method):
+    def new_function(self, *args, **kwargs):
+      self.set_template_value('path', self.request.path)
+      method(self, *args, **kwargs)
+    return new_function
     
   #I find the following code to be so cool and meta
   #it gives me butterflies in my stomache. Python <3
@@ -63,7 +80,14 @@ class RequestHandler(webapp.RequestHandler):
   @classmethod
   def all_require_authentication(self, to_be, otherwise):
     """Only decorate __new__ with this decorator!"""
-    decorator = RequestHandler.require_authentication
+    
+    def decorator(to_be, otherwise):
+      def the_decorator(method):
+        method = RequestHandler.require_authentication(to_be, otherwise)(method)
+        method = RequestHandler.sends_request_url(method)
+        return method
+      return the_decorator
+    
     def new_decorator(method):
       if method.__name__ != '__new__':
         return method #Dont do anything

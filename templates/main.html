@@ -1,22 +1,9 @@
-<head>
-	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
-</head>
-<br>
-<div class="main_div">
-  <b class="spiffy">
-  <b class="spiffy1"><b></b></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy5"></b></b>
-  <div class="spiffyfg">
-	<div id="navcontainer">
-	<ul id="navlist">
+{% extends "base.html" %}
+{% block navlist %}
 	<li id="active"><a href="/" id="current">Login</a></li>
 	<li><a href="/create">Create Account</a></li>
-	</ul>
-	</div>
-	<br>
+{% endblock %}
+{% block content %}
     <form action="/login" method="post" accept-charset="utf-8">
         {% if login_failed %}
 			<h2 class="error">{{login_failed}}</h2><br>
@@ -27,11 +14,4 @@
 		<input type="submit" value="Login &rarr;"></br>
 	</form>
 	<a href="/create">Create an account</a>
-  </div>
-  <b class="spiffy">
-  <b class="spiffy5"></b>
-  <b class="spiffy4"></b>
-  <b class="spiffy3"></b>
-  <b class="spiffy2"><b></b></b>
-  <b class="spiffy1"><b></b></b></b>
-</div>
+{% endblock %}

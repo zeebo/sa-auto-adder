@@ -24,7 +24,7 @@ font-weight: bold;
 margin: 0 10px 4px 10px;
 text-decoration: none;
 }
-#navlist li#logout {
+#navlist li.right {
   float: right;
 }
 #navlist a:link#current, #navlist a:visited#current, #navlist a:hover

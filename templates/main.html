@@ -1,7 +1,7 @@
 <head>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
-<h1 class="title">SA Auto Adder</h1>
+<br>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -10,6 +10,13 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
+	<div id="navcontainer">
+	<ul id="navlist">
+	<li id="active"><a href="/" id="current">Login</a></li>
+	<li><a href="/create">Create Account</a></li>
+	</ul>
+	</div>
+	<br>
     <form action="/login" method="post" accept-charset="utf-8">
         {% if login_failed %}
 			<h2 class="error">{{login_failed}}</h2><br>

@@ -1,7 +1,7 @@
 <head>
 	<link rel="stylesheet" href="/assets/main.css" type="text/css" media="screen" title="no title" charset="utf-8">
 </head>
-<h1 class="title">Control Panel : Home</h1>
+<br>
 <div class="main_div">
   <b class="spiffy">
   <b class="spiffy1"><b></b></b>
@@ -10,19 +10,18 @@
   <b class="spiffy4"></b>
   <b class="spiffy5"></b></b>
   <div class="spiffyfg">
-      <h2>Welcome (<a href="/logout">logout</a>)</h2><br>
-      <h2 class="error">DO NOT REMOVE THE BOT FROM THE WAVE. USE THE ADMIN CONTROLS</h2><br>
-      <div class="links">
-          <ul>
-              <li><a href="/panel/admin">Administer waves</a></li>
-              <li><a href="/panel/waves">Join waves</a></li>
-              <li><a href="/panel/queue">Task queue</a> ({{tasks|length}})</li>
-          </ul>
-      </div>
-      <div class="events">
-          Recent Events
-      </div>
-      <div class="footer">&nbsp;</div>
+	<div id="navcontainer">
+	<ul id="navlist">
+	<li id="active"><a href="/panel/events" id="current">Events</a></li>
+	<li><a href="/panel/waves">Join Waves</a></li>
+	<li><a href="/panel/admin">Admin Waves</a></li>
+	<li><a href="/panel/queue">Task Queue</a></li>
+	<li><a href="/panel/edit">Edit Account</a></li>
+	<li id="logout"><a href="/logout">Logout</a></li>
+	</ul>
+	</div>
+	<br>
+	<div class="event">{{request}}</div>
   </div>
   <b class="spiffy">
   <b class="spiffy5"></b>

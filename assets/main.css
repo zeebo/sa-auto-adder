@@ -1,18 +1,43 @@
 .title {
   margin-bottom: 10px;
 }
-.links {
-  float: left;
-  border-right: 1px solid white;
-  margin: 1em;
-  padding: 1em;
+#navlist
+{
+margin: 0;
+padding: 0 0 20px 10px;
+border-bottom: 1px solid #99a;
 }
-.footer {
-  clear: both;
+
+#navlist ul, #navlist li
+{
+margin: 0;
+padding: 0;
+display: inline;
+list-style-type: none;
 }
-.links ul {
-  display: block;
+
+#navlist a:link, #navlist a:visited
+{
+float: left;
+line-height: 14px;
+font-weight: bold;
+margin: 0 10px 4px 10px;
+text-decoration: none;
 }
+#navlist li#logout {
+  float: right;
+}
+#navlist a:link#current, #navlist a:visited#current, #navlist a:hover
+{
+border-bottom: 4px solid #99a;
+padding-bottom: 2px;
+background: transparent;
+}
+
+#navlist a:hover { color: #99a; }
+
+
+
 
 body {
 	background-color: rgb(20,20,20);
@@ -36,7 +61,6 @@ a {
 	width:750px;
 	margin: 0 auto;
 }
-
 div.form_div {
   text-align:left;
   margin: 0 auto;
@@ -63,12 +87,6 @@ div.form_div {
   width: 25em;
   text-align: right;
 }
-
-
-
-
-
-
 .spiffy{display:block}
 .spiffy *{
   display:block;

@@ -21,6 +21,14 @@ class LoginAction(NotAuthenticatedHandler):
     else:
       self.redirect('/')
 
+class PanelPage(AuthenticatedHandler):
+  def get(self):
+    self.redirect('/panel/events')
+  
+class PanelHandler(AuthenticatedHandler):
+  def get(self, url):
+    self.render('panel.html', {'request': url})
+
 class LogoutAction(AuthenticatedHandler):
   def get(self):
     self.auth.logout()
@@ -50,6 +58,8 @@ application = webapp.WSGIApplication([
                                         ('/logout', LogoutAction),
                                         ('/create', CreatePage),
                                         ('/make_user', CreateAction),
+                                        ('/panel', PanelPage),
+                                        ('/panel/(.*?)', PanelHandler),
                                      ], debug=True)
 
 def main():

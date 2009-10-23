@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block content %}
+{% if wavelets %}
+{% for wavelet in wavelets %}
+<div class="wavelet">
+    <a href="/panel/add/{{wavelet.short_url}}">
+    <span id="title" class="info">{{wavelet.title}}</span><br>
+    <span id="admin">{{wavelet.admin.username}} ({{wavelet.admin.wave_address}})</span>
+    </a>
+</div>
+{% endfor %}
+{% else %}
+No waves to join oh my god
+{% endif %}
+{% endblock %}
+

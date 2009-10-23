@@ -18,20 +18,6 @@ class LoginAction(NotAuthenticatedHandler):
     else:
       self.redirect('/')
 
-class PanelPage(AuthenticatedHandler):
-  def get(self):
-    self.redirect('/panel/events')
-  
-class PanelHandler(AuthenticatedHandler):
-  def get(self):
-    self.render('panel.html', {})
-
-class LogoutAction(AuthenticatedHandler):
-  def get(self):
-    self.auth.logout()
-    self.auth.del_cookies(self.response)
-    self.render('logout.html', {})
-
 class CreatePage(NotAuthenticatedHandler):
   def get(self):
     if self.request.get('newtoken'):
@@ -47,3 +33,21 @@ class CreateAction(NotAuthenticatedHandler):
   def post(self):
     self.auth.login_as(self.user_maker.make_user(self.request))
     self.redirect('/create')
+
+class PanelPage(AuthenticatedHandler):
+  def get(self):
+    self.redirect('/panel/events')
+
+class PanelWavesHandler(AuthenticatedHandler):
+  def get(self):
+    self.render('waves.html', {'wavelets': self.wavelets.visible_wavelets})
+
+class PanelHandler(AuthenticatedHandler):
+  def get(self):
+    self.render('panel.html', {})
+
+class LogoutAction(AuthenticatedHandler):
+  def get(self):
+    self.auth.logout()
+    self.auth.del_cookies(self.response)
+    self.render('logout.html', {})

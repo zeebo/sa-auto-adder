@@ -15,7 +15,9 @@ class TaskHandler(object):
   
   def do_add_participant(self, task, context):
     builder = ops.OpBuilder(context)
-    builder.WaveletAddParticipant(task.wave_id, task.wavelet_id, task.participant_id)
+    builder.WaveletAddParticipant(task.wave_id,
+                                  task.wavelet_id,
+                                  task.participant_id)
     logging.debug("Added participant %s" % task.participant_id)
   
 
@@ -55,11 +57,19 @@ class EventListener(object):
           #Option 4. Do nothing (easiest to code!)
           logging.debug('Added to a wave with no matching admin')
         else:
+          while True:
+            short_url = hashlib.sha1(str(random.random())).hexdigest()[:10]
+            url_query = db.Query(WaveletInfo)
+            query.filter('short_url =', short_url)
+            if query.get() is None:
+              break
+          
           data = WaveletInfo(wave_id=wavelet.waveId,
                              wavelet_id=wavelet.waveletId,
                              admin=admin,
                              root_blip=wavelet.rootBlipId,
-                             title=wavelet.title)
+                             title=wavelet.title,
+                             short_url=short_url)
           data.put()
       else:
         logging.debug("Added to a wavelet I was supposed to be in already!")
@@ -87,8 +97,8 @@ class EventListener(object):
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 
       image_url='http://sa-auto-adder.appspot.com/icon.png',
-      version='2.17',
+      version='2.18',
       profile_url='http://sa-auto-adder.appspot.com/')
   myRobot.RegisterListener(EventListener())
-  myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 30)
+  myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 60)
   myRobot.Run(debug=True)

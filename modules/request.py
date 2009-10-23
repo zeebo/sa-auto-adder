@@ -2,6 +2,7 @@ from google.appengine.ext import webapp
 from google.appengine.ext.webapp import template
 from modules.auth import Auth
 from modules.user_maker import UserMaker
+from modules.wavelet_handler import WaveletHandler
 import os, logging
 
 def NotAuthenticatedBuilder(redirect):
@@ -23,6 +24,7 @@ class RequestHandler(webapp.RequestHandler):
   def __init__(self):
     self.__auth = Auth()
     self.__user_maker = UserMaker()
+    self.__wavelet_handler = WaveletHandler()
     self.__template = {}
   
   def set_template_value(self, key, value):
@@ -58,6 +60,10 @@ class RequestHandler(webapp.RequestHandler):
   @property
   def user_maker(self):
     return self.__user_maker
+    
+  @property
+  def wavelets(self):
+    return self.__wavelet_handler
     
   #I find the following code to be so cool and meta
   #it gives me butterflies in my stomache. Python <3

@@ -3,6 +3,7 @@ from google.appengine.ext.webapp import template
 from modules.auth import Auth
 from modules.user_maker import UserMaker
 from modules.wavelet_handler import WaveletHandler
+from modules.flash import Flash
 import os, logging
 
 def NotAuthenticatedBuilder(redirect):
@@ -25,6 +26,7 @@ class RequestHandler(webapp.RequestHandler):
     self.__auth = Auth()
     self.__user_maker = UserMaker()
     self.__wavelet_handler = WaveletHandler()
+    self.__flash = Flash()
     self.__template = {}
   
   def set_template_value(self, key, value):
@@ -52,6 +54,10 @@ class RequestHandler(webapp.RequestHandler):
     self.set_template_value('right_links', urls.get_right_links(section))
     self.auth.check_cookies(request.cookies)
     super(RequestHandler, self).initialize(request, response)
+  
+  @property
+  def flash(self):
+      return self.__flash
   
   @property
   def auth(self):

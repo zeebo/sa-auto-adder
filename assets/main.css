@@ -10,7 +10,10 @@
 .wavelet a:hover {
   background-color: #555;
 }
-
+.wavelet #title {
+  color: #99a;
+  font-weight: bold;
+}
 
 hr {
   color: #99a;

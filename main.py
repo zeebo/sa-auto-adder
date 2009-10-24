@@ -29,7 +29,9 @@ urls = url_list.UrlList({
       ('Logout', '/logout', pages.LogoutAction),
       ('Edit Account', '/edit', pages.PanelHandler),
     ],
-    'actions':[],
+    'actions':[
+      ('', '/join/(.*?)', pages.JoinAction),
+    ],
   },
 })
 

@@ -1,5 +1,5 @@
 from modules.request import AuthenticatedBuilder, NotAuthenticatedBuilder
-
+import logging
 #this shit is so meta
 NotAuthenticatedHandler = NotAuthenticatedBuilder('/panel')
 AuthenticatedHandler = AuthenticatedBuilder('/')
@@ -33,6 +33,14 @@ class CreateAction(NotAuthenticatedHandler):
   def post(self):
     self.auth.login_as(self.user_maker.make_user(self.request))
     self.redirect('/create')
+  
+####################################
+
+class JoinAction(AuthenticatedHandler):
+  def get(self, short_url):
+    self.flash.add_info('added to %s' % short_url)
+    self.redirect('/panel/waves')
+  
 
 class PanelPage(AuthenticatedHandler):
   def get(self):
@@ -40,7 +48,15 @@ class PanelPage(AuthenticatedHandler):
 
 class PanelWavesHandler(AuthenticatedHandler):
   def get(self):
-    self.render('waves.html', {'wavelets': self.wavelets.visible_wavelets})
+    #must filter by:
+      #1. not in task queue
+      #2. admin != self.auth.user
+    data = {
+      'wavelets': self.wavelets.visible_wavelets,
+      'info': self.flash.info,
+      'error': self.flash.error,
+    }
+    self.render('waves.html', data)
 
 class PanelHandler(AuthenticatedHandler):
   def get(self):

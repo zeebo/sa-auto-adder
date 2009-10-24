@@ -33,7 +33,9 @@ class SAProfile(object):
   def has_token(self, token):
     return token in self.profile
   
-  def get_cookies(self, username, password):
+  def get_cookies(self):
+    from sa_settings import SA_INFO
+    username, password = SA_INFO['username'], SA_INFO['password']
     cookie_cache = cache.Cache()
     if 'data' in cookie_cache:
       return cookie_cache['data']
@@ -60,7 +62,7 @@ class SAProfile(object):
     from sa_settings import SA_INFO
     url = 'http://forums.somethingawful.com/member.php' + \
                           '?s=&action=getinfo&username=%s' % self.__username
-    cookies = self.get_cookies(SA_INFO['username'], SA_INFO['password'])
+    cookies = self.get_cookies()
 
     try:
       result = urlfetch.fetch(url=url, headers={'Cookie': cookies})

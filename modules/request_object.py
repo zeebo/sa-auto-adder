@@ -16,6 +16,9 @@ class RequestObject(object):
       self.do_init()
     self.__class__.session[self.__class__.__name__] = self
 
+  def do_init(self):
+    pass
+
   @property
   def error(self):
     try:
@@ -25,11 +28,8 @@ class RequestObject(object):
       
   @property
   def errors(self):
-    temp, self._error = self.__error, []
+    temp, self.__error = self.__error, []
     return temp
-  
-  def add_error(self, error):
-    self.__error.append(error)
 
-  def do_init(self):
-    pass
+  def add_error(self, message):
+    self.__error.append(message)

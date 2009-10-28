@@ -27,13 +27,15 @@ class Auth(RequestObject):
   def check_cookies(self, cookies):
     if 'token' in cookies:
       if self.__token_cache != cookies['token']:
-        self.__token_cache = cookies['token']
         token, username = cookies['token'].split('|')
         query = db.Query(User)
-        query.filter('username = ', username)
-        query.filter('cookie_token =', token)
+        query.filter('username', username)
+        query.filter('cookie_token', token)
         self.user = query.get()
-    
+        if self.user is None:
+          raise Exception, 'cookie error'
+        self.__token_cache = cookies['token']
+  
   def add_cookies(self, response):
     if self.user is not None:
       token = hashlib.sha1(str(random.random())).hexdigest()

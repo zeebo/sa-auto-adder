@@ -56,7 +56,11 @@ class RequestHandler(webapp.RequestHandler):
     self.set_template_value('right_links', urls.get_right_links(section))
     self.set_template_value('error', self.flash.error)
     self.set_template_value('info', self.flash.info)
-    self.auth.check_cookies(request.cookies)
+    try:
+      self.auth.check_cookies(request.cookies)
+    except Exception, error:
+      self.flash.add_error('invalid cookie')
+      self.auth.del_cookies(response)
     super(RequestHandler, self).initialize(request, response)
   
   @property

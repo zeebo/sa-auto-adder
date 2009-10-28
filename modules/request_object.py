@@ -11,7 +11,7 @@ class RequestObject(object):
 
   def __init__(self):
     if self.__class__.__name__ not in self.session:
-      logging.error("Created a %s object" % self.__class__.__name__)
+      #logging.error("Created a %s object" % self.__class__.__name__)
       self.__error = []
       self.do_init()
     self.__class__.session[self.__class__.__name__] = self

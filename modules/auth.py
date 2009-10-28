@@ -1,6 +1,6 @@
 from google.appengine.ext import db
 from models.user import User
-from modules.request_object import RequestObject
+from modules.request_object import RequestObject, updates_session
 import hashlib, random
 import logging
 
@@ -9,9 +9,9 @@ class Auth(RequestObject):
     self.user = None
     self.__token_cache = ''
   
+  @updates_session
   def set_user(self, user):
     self.user = user
-    self.update_session()
   
   def login_as(self, user):
     self.set_user(user)
@@ -24,10 +24,10 @@ class Auth(RequestObject):
     if self.user is None:
       raise Exception, "login failed"
   
+  @updates_session
   def logout(self):
-    self.user = None
+    self.set_user(None)
     self.__token_cache = ''
-    self.update_session()
   
   def check_cookies(self, cookies):
     logging.error('cookies')
@@ -35,7 +35,7 @@ class Auth(RequestObject):
       logging.error(cookies['token'])
       logging.error(self.__token_cache)
       if cookies['token'] == '':
-        self.user = None
+        self.set_user(None)
       elif self.__token_cache != cookies['token']:
         token, username = cookies['token'].split('|')
         query = db.Query(User)

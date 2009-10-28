@@ -1,4 +1,4 @@
-from modules.request_object import RequestObject
+from modules.request_object import RequestObject, updates_session
 from modules.sa_profile import SAProfile
 from modules.appengine_utilities import cache
 from models.user import User
@@ -16,11 +16,12 @@ class UserMaker(RequestObject):
   def token(self):
     return self.__token
     
+  @updates_session
   def generate_token(self):
     self.__token = 'sa-auto-adder|%s' % \
                           hashlib.sha1(str(random.random())).hexdigest()[:15]
-    self.update_session()
   
+  @updates_session
   def validate_data_and_get_sa_uid(self, post_data):
     if not self.filled_post_data(post_data):
       raise Exception, 'fill out the fields'
@@ -37,7 +38,6 @@ class UserMaker(RequestObject):
       raise Exception, 'token not found in profile'
     
     self.__uid = sa_user.uid
-    self.update_session()
   
   def filled_post_data(self, post_data):
     #just makes sure theres something in every field

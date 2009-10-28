@@ -1,8 +1,16 @@
 from modules.appengine_utilities import sessions
 import logging
 
-class RequestObject(object):
+def updates_session(method):
+  def new_method(self, *args, **kwargs):
+    return_value = method(self, *args, **kwargs)
+    self.update_session()
+    return return_value
+  return new_method
 
+
+class RequestObject(object):
+  
   def __new__(cls, *args, **kwargs):
     session = sessions.Session()
     
@@ -26,20 +34,19 @@ class RequestObject(object):
     session[self.__class__.__name__] = self
 
   @property
+  @updates_session
   def error(self):
     try:
-      the_error = self.__error.pop()
-      self.update_session()
-      return the_error
+      return str(self.__error.pop()) + " PANIC!"
     except IndexError:
       return None
       
   @property
+  @updates_session
   def errors(self):
     temp, self.__error = self.__error, []
-    self.update_session()
     return temp
 
+  @updates_session
   def add_error(self, message):
     self.__error.append(message)
-    self.update_session()

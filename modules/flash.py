@@ -1,4 +1,4 @@
-from modules.request_object import RequestObject
+from modules.request_object import RequestObject, updates_session
 import logging
 
 class Flash(RequestObject):  
@@ -7,21 +7,20 @@ class Flash(RequestObject):
     self.__error = []
   
   @property
+  @updates_session
   def info(self):
     try:
-      info = self.__info.pop()
-      self.update_session()
-      return info
+      return self.__info.pop()
     except IndexError:
       return None
   
   @property
+  @updates_session
   def infos(self):
       temp, self.__info = self.__info, []
-      self.update_session()
       return temp
-  
+      
+  @updates_session
   def add_info(self, message):
     self.__info.append(message)
-    self.update_session()
   

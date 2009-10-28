@@ -60,8 +60,8 @@ class SAProfile(object):
     
   def __download_profile_data(self):
     from sa_settings import SA_INFO
-    url = 'http://forums.somethingawful.com/member.php' + \
-                          '?s=&action=getinfo&username=%s' % self.__username
+    url = 'http://forums.somethingawful.com/member.php?s=&action=getinfo' + \
+          '&username=%s' % urllib.quote(self.__username, '')
     cookies = self.get_cookies()
 
     try:

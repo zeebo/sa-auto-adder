@@ -50,7 +50,6 @@ class WaveletHandler(RequestObject):
     task_query.filter('op_type', 'add_participant')
     task_query.filter('user', for_user)
     keys = [task.wavelet_key for task in task_query]
-    logging.error(keys)
     wave_query = db.Query(WaveletInfo)
     wave_query.filter('__key__ IN', keys)
     return list(wave_query)
@@ -89,4 +88,4 @@ class WaveletHandler(RequestObject):
   def admin_wavelets(self, for_user=None):
     query = db.Query(WaveletInfo)
     query.filter('admin', for_user)
-    return query
+    return list(query)

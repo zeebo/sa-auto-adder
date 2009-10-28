@@ -7,7 +7,7 @@ from models.user import User
 from models.waveletinfo import WaveletInfo
 from models.taskqueue import TaskQueue
 from models.event import Event
-import logging
+import logging, hashlib, random
 
 #TODO: Take out the code in the robot that interacts with the db and use
 #      some classes instead.
@@ -105,7 +105,7 @@ class EventListener(object):
 if __name__ == '__main__':
   myRobot = robot.Robot('SA Auto Adder', 
       image_url='http://sa-auto-adder.appspot.com/icon.png',
-      version='2.18',
+      version='3',
       profile_url='http://sa-auto-adder.appspot.com/')
   myRobot.RegisterListener(EventListener())
   myRobot.RegisterCronJob('http://sa-auto-adder.appspot.com/_wave/cron', 60)

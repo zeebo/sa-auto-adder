@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
     <form action="/login" method="post" accept-charset="utf-8">
+		<h2 class="info">Log in to your account<br><span class="small">if this is your first time here, <a href="/create">create an account</a></span></h2><br>
         {% if error %}
 			<h2 class="error">{{error}}</h2><br>
 		{% endif %}

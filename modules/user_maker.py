@@ -19,6 +19,7 @@ class UserMaker(RequestObject):
   def generate_token(self):
     self.__token = 'sa-auto-adder|%s' % \
                           hashlib.sha1(str(random.random())).hexdigest()[:15]
+    self.update_session()
   
   def validate_data_and_get_sa_uid(self, post_data):
     if not self.filled_post_data(post_data):
@@ -36,6 +37,7 @@ class UserMaker(RequestObject):
       raise Exception, 'token not found in profile'
     
     self.__uid = sa_user.uid
+    self.update_session()
   
   def filled_post_data(self, post_data):
     #just makes sure theres something in every field

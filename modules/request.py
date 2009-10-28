@@ -5,6 +5,7 @@ from modules.user_maker import UserMaker
 from modules.wavelet_handler import WaveletHandler
 from modules.event_handler import EventHandler
 from modules.flash import Flash
+from modules.appengine_utilities import sessions
 import os, logging
 
 def NotAuthenticatedBuilder(redirect):
@@ -30,6 +31,10 @@ class RequestHandler(webapp.RequestHandler):
     self.__flash = Flash()
     self.__event_handler = EventHandler()
     self.__template = {}
+  
+  def destory_session(self):
+    session = sessions.Session()
+    session.delete()
   
   def set_template_value(self, key, value):
     """These values overwrite anything sent to render"""

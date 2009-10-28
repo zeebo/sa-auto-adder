@@ -124,4 +124,5 @@ class LogoutAction(AuthenticatedHandler):
   def get(self):
     self.auth.logout()
     self.auth.del_cookies(self.response)
+    self.destory_session()
     self.render('logout.html', {})

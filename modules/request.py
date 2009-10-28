@@ -33,7 +33,6 @@ class RequestHandler(webapp.RequestHandler):
     self.__template = {}
   
   def destory_session(self):
-    logging.error("destory session")
     session = sessions.Session()
     session.delete()
   

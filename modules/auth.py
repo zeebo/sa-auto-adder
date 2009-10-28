@@ -30,10 +30,7 @@ class Auth(RequestObject):
     self.__token_cache = ''
   
   def check_cookies(self, cookies):
-    logging.error('cookies')
     if 'token' in cookies:
-      logging.error(cookies['token'])
-      logging.error(self.__token_cache)
       if cookies['token'] == '':
         self.set_user(None)
       elif self.__token_cache != cookies['token']:
@@ -42,7 +39,6 @@ class Auth(RequestObject):
         query.filter('username', username)
         query.filter('cookie_token', token)
         self.set_user(query.get())
-        logging.error(self.user)
         if self.user is None:
           raise Exception, 'cookie error'
         self.__token_cache = cookies['token']

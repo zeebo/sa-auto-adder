@@ -3,6 +3,7 @@ from google.appengine.ext.webapp import template
 from modules.auth import Auth
 from modules.user_maker import UserMaker
 from modules.wavelet_handler import WaveletHandler
+from modules.event_handler import EventHandler
 from modules.flash import Flash
 import os, logging
 
@@ -27,6 +28,7 @@ class RequestHandler(webapp.RequestHandler):
     self.__user_maker = UserMaker()
     self.__wavelet_handler = WaveletHandler()
     self.__flash = Flash()
+    self.__event_handler = EventHandler()
     self.__template = {}
   
   def set_template_value(self, key, value):
@@ -52,6 +54,8 @@ class RequestHandler(webapp.RequestHandler):
     self.set_template_value('section', section)
     self.set_template_value('left_links', urls.get_left_links(section))
     self.set_template_value('right_links', urls.get_right_links(section))
+    self.set_template_value('error', self.flash.error)
+    self.set_template_value('info', self.flash.info)
     self.auth.check_cookies(request.cookies)
     super(RequestHandler, self).initialize(request, response)
   
@@ -70,6 +74,10 @@ class RequestHandler(webapp.RequestHandler):
   @property
   def wavelets(self):
     return self.__wavelet_handler
+  
+  @property
+  def events(self):
+    return self.__event_handler
     
   #I find the following code to be so cool and meta
   #it gives me butterflies in my stomache. Python <3

@@ -20,27 +20,22 @@ class UserMaker(RequestObject):
     self.__token = 'sa-auto-adder|%s' % \
                           hashlib.sha1(str(random.random())).hexdigest()[:15]
   
-  def valid_data(self, post_data):
+  def validate_data_and_get_sa_uid(self, post_data):
     if not self.filled_post_data(post_data):
-      self.add_error('fill out the fields')
-      return False
+      raise Exception, 'fill out the fields'
     
     if self.username_taken(post_data):
-      self.add_error('username taken')
-      return False
+      raise Exception, 'username taken'
     
     sa_user = SAProfile(post_data['sa_username'])
     
     if self.sa_uid_taken(sa_user.uid):
-      self.add_error('sa user has an account already')
-      return False
+      raise Exception, 'sa user has an account already'
     
     if not sa_user.has_token(self.__token):
-      self.add_error('token not found')
-      return False
+      raise Exception, 'token not found in profile'
     
     self.__uid = sa_user.uid
-    return True
   
   def filled_post_data(self, post_data):
     #just makes sure theres something in every field
@@ -60,8 +55,7 @@ class UserMaker(RequestObject):
   def make_user(self, request):
     post_data = dict([(key, request.get(key)) for key in request.arguments()])
     
-    if not self.valid_data(post_data):
-      return None
+    self.validate_data_and_get_sa_uid(post_data)
     
     new_user = User(
                     username=request.get('username'),

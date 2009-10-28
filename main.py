@@ -20,17 +20,20 @@ urls = url_list.UrlList({
   'panel':{
     'base_url':('/panel', pages.PanelPage),
     'pages':[
-      ('Events', '/events', pages.PanelHandler),
+      ('Events', '/events', pages.PanelEventHandler),
       ('Join Waves', '/waves', pages.PanelWavesHandler),
-      ('Admin Waves', '/admin', pages.PanelHandler),
-      ('Task Queue', '/queue', pages.PanelHandler),
+      ('Admin Waves', '/admin', pages.PanelAdminHandler),
+      ('Task Queue', '/queue', pages.PanelQueueHandler),
     ],
     'right-pages':[
       ('Logout', '/logout', pages.LogoutAction),
-      ('Edit Account', '/edit', pages.PanelHandler),
+      ('Edit Account', '/edit', pages.EditUserHandler),
     ],
     'actions':[
       ('', '/join/(.*?)', pages.JoinAction),
+      ('', '/admin/(.*?)', pages.AdminAction),
+      ('', '/leave/(.*?)', pages.LeaveAction),
+      ('', '/erase/(.*?)', pages.DeleteEventAction),
     ],
   },
 })

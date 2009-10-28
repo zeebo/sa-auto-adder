@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 {% block content %}
     <form action="/login" method="post" accept-charset="utf-8">
-        {% if login_failed %}
-			<h2 class="error">{{login_failed}}</h2><br>
+        {% if error %}
+			<h2 class="error">{{error}}</h2><br>
 		{% endif %}
 		<label for="username">user</label> <input class="right" type="text" name="username" value="" id="username"></br>
 		<label for="password">pass</label> <input class="right"type="password" name="password" value="" id="password"></br>

@@ -3,7 +3,7 @@
 {% if info %}
 	<h2 class="info">{{info}}</h2><br>
 {% else %}
-	<h2 class="info">Click a wave to join it</h2><br>
+	<h2 class="info">Click a wave to toggle visibility (and joinability)</h2><br>
 {% endif %}
 {% if error %}
 	<h2 class="error">{{error}}</h2><br>
@@ -11,14 +11,14 @@
 {% if wavelets %}
 {% for wavelet in wavelets %}
 <div class="wavelet">
-    <a href="/panel/join/{{wavelet.short_url}}">
+    <a href="/panel/admin/{{wavelet.short_url}}">
     <span id="title">{{wavelet.title}}</span><br>
-    <span id="admin">{{wavelet.admin.username}} ({{wavelet.admin.wave_address}})</span>
+    <span id="admin">Visible: {{wavelet.visible}}</span>
     </a>
 </div>
 {% endfor %}
 {% else %}
-No waves to join oh my god
+No waves to admin. add a bot to one already
 {% endif %}
 {% endblock %}
 

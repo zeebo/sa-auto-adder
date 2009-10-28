@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+{% if info %}
+	<h2 class="info">{{info}}</h2><br>
+{% else %}
+	<h2 class="info">Recent Events<br><span class="small">click to remove</span></h2><br>
+{% endif %}
+{% if error %}
+	<h2 class="error">{{error}}</h2><br>
+{% endif %}
+{% if events %}
+{% for event in events %}
+<div class="wavelet">
+    <a href="/panel/erase/{{event.key}}">
+    <span id="title">{{event.event_text}}</span><br>
+	<span id="admin">{{event.time_added}}</span><br>
+    </a>
+</div>
+{% endfor %}
+{% else %}
+No events
+{% endif %}
+{% endblock %}
+

@@ -1,3 +1,6 @@
+.small {
+  font-size: 10px;
+}
 .wavelet {
   text-align: center;
   margin: 0;
@@ -76,7 +79,7 @@ a {
   font-weight: bold;
 }
 .info {
-  color: rgb(100,100,220);
+  color: #999;
   font-weight: bold;
 }
 .main_div {

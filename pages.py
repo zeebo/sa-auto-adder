@@ -10,12 +10,14 @@ class LoginPage(NotAuthenticatedHandler):
 
 class LoginAction(NotAuthenticatedHandler):
   def post(self):
-    self.auth.login(self.request.get('username'), self.request.get('password'))
-    if self.auth.user:
+    try:
+      self.auth.login(self.request.get('username'),
+                      self.request.get('password'))
       if self.request.get('remember'):
         self.auth.add_cookies(self.response)
       self.redirect('/panel')
-    else:
+    except Exception, error:
+      self.flash.add_error(error)
       self.redirect('/')
 
 class CreatePage(NotAuthenticatedHandler):
@@ -31,20 +33,74 @@ class CreatePage(NotAuthenticatedHandler):
 
 class CreateAction(NotAuthenticatedHandler):
   def post(self):
-    self.auth.login_as(self.user_maker.make_user(self.request))
+    try:
+      self.auth.login_as(self.user_maker.make_user(self.request))
+    except Exception, error:
+      self.flash.add_error(error)
+    
     self.redirect('/create')
   
 ####################################
 
 class JoinAction(AuthenticatedHandler):
   def get(self, short_url):
-    self.flash.add_info('added to %s' % short_url)
+    try:
+      self.wavelets.add_user_to_wavelet(self.auth.user, short_url)
+      self.flash.add_info('added to wavelet')
+    except Exception, error:
+      self.flash.add_error(error)
     self.redirect('/panel/waves')
   
+class AdminAction(AuthenticatedHandler):
+  def get(self, short_url):
+    try:
+      self.wavelets.toggle_visibility(self.auth.user, short_url)
+      self.flash.add_info('toggled wavelet')
+    except Exception, error:
+      self.flash.add_error(error)
+    self.redirect('/panel/admin')
+
+class LeaveAction(AuthenticatedHandler):
+  def get(self, short_url):
+    try:
+      self.wavelets.remove_user_from_wavelet(self.auth.user, short_url)
+      self.flash.add_info('removed from wavelet')
+    except Exception, error:
+      self.flash.add_error(error)
+    self.redirect('/panel/queue')
+
+class DeleteEventAction(AuthenticatedHandler):
+  def get(self, key):
+    try:
+      self.events.delete_event(self.auth.user, key)
+    except Exception, error:
+      self.flash.add_error(error)
+    self.redirect('/panel/events')
 
 class PanelPage(AuthenticatedHandler):
   def get(self):
     self.redirect('/panel/events')
+  
+class PanelEventHandler(AuthenticatedHandler):
+  def get(self):
+    data = {
+      'events': self.events.get_events(for_user=self.auth.user)
+    }
+    self.render('events.html', data)
+
+class PanelQueueHandler(AuthenticatedHandler):
+  def get(self):
+    data = {
+      'wavelets': self.wavelets.queued_wavelets(for_user=self.auth.user),
+    }
+    self.render('queue.html', data)
+
+class PanelAdminHandler(AuthenticatedHandler):
+  def get(self):
+    data = {
+      'wavelets': self.wavelets.admin_wavelets(for_user=self.auth.user),
+    }
+    self.render('admin.html', data)
 
 class PanelWavesHandler(AuthenticatedHandler):
   def get(self):
@@ -52,11 +108,13 @@ class PanelWavesHandler(AuthenticatedHandler):
       #1. not in task queue
       #2. admin != self.auth.user
     data = {
-      'wavelets': self.wavelets.visible_wavelets,
-      'info': self.flash.info,
-      'error': self.flash.error,
+      'wavelets': self.wavelets.visible_wavelets(for_user=self.auth.user),
     }
     self.render('waves.html', data)
+
+class EditUserHandler(AuthenticatedHandler):
+  def get(self):
+    self.render('edit.html', {})
 
 class PanelHandler(AuthenticatedHandler):
   def get(self):

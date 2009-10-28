@@ -3,8 +3,14 @@ from waveapi import model
 from waveapi import robot
 from waveapi import ops
 from google.appengine.ext import db
-from model.models import WaveletInfo, User, TaskQueue
+from models.user import User
+from models.waveletinfo import WaveletInfo
+from models.taskqueue import TaskQueue
+from models.event import Event
 import logging
+
+#TODO: Take out the code in the robot that interacts with the db and use
+#      some classes instead.
 
 class TaskHandler(object):
   def __init__(self, context):
@@ -18,6 +24,8 @@ class TaskHandler(object):
     builder.WaveletAddParticipant(task.wave_id,
                                   task.wavelet_id,
                                   task.participant_id)
+    
+    Event(user=task.user, event_text="Added to %s" % task.wavelet_title).put()
     logging.debug("Added participant %s" % task.participant_id)
   
 
